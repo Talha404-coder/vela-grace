@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+```html
+<!DOCTYPE html> 
 <html lang="en">
 <head>
-<link rel="stylesheet" href="style.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vela Grace</title>
@@ -12,6 +12,7 @@
 
 <header class="navbar">
 <div class="logo">Vela Grace</div>
+
 <nav>
 <a href="#">Home</a>
 <a href="#shop">Shop</a>
@@ -19,14 +20,10 @@
 <a href="#instagram">Instagram</a>
 </nav>
 
-<!-- Put this inside your header, e.g. <header> ... </header> -->
 <button id="cart-btn" class="cart-btn" aria-label="Open cart">
-  🛒 <span id="cart-count" class="cart-count">0</span>
+🛒 <span id="cart-count" class="cart-count">0</span>
 </button>
 
-<div class="cart" onclick="toggleCart()">
-🛒 <span id="cart-count">0</span>
-</div>
 </header>
 
 <section class="hero">
@@ -136,42 +133,37 @@
 
 <div class="payment-methods">
 
-  <!-- JazzCash -->
-  <div class="qr-payment">
-    <h3>Pay via JazzCash</h3>
-    <button onclick="showQRCode('jazzcash')">Pay with JazzCash</button>
-  </div>
+<div class="qr-payment">
+<h3>Pay via JazzCash</h3>
+<button onclick="showQRCode('jazzcash')">Pay with JazzCash</button>
+</div>
 
-  <!-- Easypaisa -->
-  <div class="qr-payment">
-    <h3>Pay via Easypaisa</h3>
-    <button onclick="showQRCode('easypaisa')">Pay with Easypaisa</button>
-  </div>
+<div class="qr-payment">
+<h3>Pay via Easypaisa</h3>
+<button onclick="showQRCode('easypaisa')">Pay with Easypaisa</button>
+</div>
 
-  <!-- SadaPay -->
-  <div class="qr-payment">
-    <h3>Pay via SadaPay</h3>
-    <button onclick="showQRCode('sadapay')">Pay with SadaPay</button>
-  </div>
+<div class="qr-payment">
+<h3>Pay via SadaPay</h3>
+<button onclick="showQRCode('sadapay')">Pay with SadaPay</button>
+</div>
 
-  <!-- Bank Transfer -->
-  <div class="bank-transfer">
-    <p>Bank: ABC Bank</p>
-    <p>Account #: 123456789</p>
-    <p>IBAN: PK00ABCD123456789</p>
-  </div>
+<div class="bank-transfer">
+<p>Bank: ABC Bank</p>
+<p>Account #: 123456789</p>
+<p>IBAN: PK00ABCD123456789</p>
+</div>
 
 </div>
 </section>
 
-<!-- QR Modal (outside payment-methods) -->
 <div id="qr-modal" class="qr-modal" style="display:none;">
-  <div class="qr-content">
-    <span class="close" onclick="closeQRCode()">&times;</span>
-    <h3 id="qr-title"></h3>
-    <img id="qr-image" src="" alt="QR Code" width="250">
-    <button onclick="checkoutWhatsApp()">Send Payment Confirmation via WhatsApp</button>
-  </div>
+<div class="qr-content">
+<span class="close" onclick="closeQRCode()">&times;</span>
+<h3 id="qr-title"></h3>
+<img id="qr-image" src="" alt="QR Code" width="250">
+<button onclick="checkoutWhatsApp()">Send Payment Confirmation via WhatsApp</button>
+</div>
 </div>
 
 <footer>
@@ -209,5 +201,5 @@ Order via WhatsApp
 <script src="script.js"></script>
 
 </body>
-
 </html>
+```
