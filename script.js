@@ -14,21 +14,69 @@ function closeQuickView(){
     document.getElementById("quickview").style.display="none"
 }
 
+/* ADD TO CART */
+
 function addToCart(name,price){
-    // Default quantity 1 if not defined
-    let quantity = 1
-    cart.push({name, price, quantity})
+
+    let existing = cart.find(item => item.name === name)
+
+    if(existing){
+        existing.quantity += 1
+    }else{
+        cart.push({name, price, quantity:1})
+    }
+
     updateCart()
 }
 
-function updateCart(){
-    document.getElementById("cart-count").innerText=cart.length
+/* UPDATE CART */
 
+function updateCart(){
+
+    let count = 0
+    let total = 0
     let html=""
-    cart.forEach(item=>{
-        html+=`<p>${item.name} - $${item.price}</p>`
+
+    cart.forEach((item,index)=>{
+
+        count += item.quantity
+        total += item.price * item.quantity
+
+        html += `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
+
+        <div>
+        <b>${index+1}. ${item.name}</b><br>
+        $${item.price}
+        </div>
+
+        <div>
+        <button onclick="changeQty(${index},-1)">-</button>
+        ${item.quantity}
+        <button onclick="changeQty(${index},1)">+</button>
+        </div>
+
+        </div>
+        `
     })
+
+    html += `<hr><h3>Total: $${total}</h3>`
+
+    document.getElementById("cart-count").innerText=count
     document.getElementById("cart-items").innerHTML=html
+}
+
+/* CHANGE QUANTITY */
+
+function changeQty(index,change){
+
+    cart[index].quantity += change
+
+    if(cart[index].quantity <= 0){
+        cart.splice(index,1)
+    }
+
+    updateCart()
 }
 
 function toggleCart(){
@@ -44,30 +92,25 @@ function checkoutWhatsApp() {
         return;
     }
 
-    // Start message
     let message = "Hello! I want to order:%0A";
 
-    // Loop through cart items
     cart.forEach(item => {
         message += `${item.name} - Qty: ${item.quantity} - $${item.price * item.quantity}%0A`;
     });
 
-    // Optionally add total
     const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
     message += `%0ATotal: $${total}`;
 
-    // Open WhatsApp chat with pre-filled message
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, "_blank");
 }
 
-// --- QR Modal functionality for payments (UPDATED) ---
+// --- QR Modal functionality for payments ---
 const qrFiles = {
     jazzcash: "jazzcash.jpeg",
     easypaisa: "easypaisa.png",
     sadapay: "sadapay.png"
 };
 
-// Function to try multiple paths/extensions
 function setImageWithFallback(imgEl, filename) {
     const bases = ["assets/payments/", "Assets/payments/"];
     const commonExts = [".jpeg", ".jpg", ".png"];
@@ -85,22 +128,15 @@ function setImageWithFallback(imgEl, filename) {
     let i = 0;
     imgEl.style.display = "";
     imgEl.src = candidates[0];
-    console.log("Trying QR image paths:", candidates);
 
     imgEl.onerror = function () {
         i++;
         if (i < candidates.length) {
-            console.log("Failed, trying next:", candidates[i]);
             imgEl.src = candidates[i];
         } else {
-            console.error("All QR image paths failed:", candidates);
             imgEl.style.display = "none";
             document.getElementById("qr-title").innerText = "QR not found — please check assets folder / file name";
         }
-    };
-
-    imgEl.onload = function () {
-        console.log("QR image loaded from:", imgEl.src);
     };
 }
 
@@ -116,7 +152,6 @@ function showQRCode(method){
     if (!filename) {
         qrTitle.innerText = "QR file not configured for this method";
         qrImage.style.display = "none";
-        console.error("No filename for payment method:", method);
         return;
     }
 
@@ -136,3 +171,7 @@ setInterval(()=>{
     index=(index+1)%reviews.length
     reviews[index].classList.add("active")
 },4000)
+
+/* CART BUTTON CLICK */
+
+document.getElementById("cart-btn").addEventListener("click",toggleCart)
