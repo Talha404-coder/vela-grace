@@ -175,3 +175,18 @@ setInterval(()=>{
 /* CART BUTTON CLICK */
 
 document.getElementById("cart-btn").addEventListener("click",toggleCart)
+let zoomed = false;
+
+function toggleZoom(){
+    const img = document.getElementById("product-image");
+
+    if(!zoomed){
+        img.style.transform = "scale(2)";
+        img.style.cursor = "zoom-out";
+        zoomed = true;
+    }else{
+        img.style.transform = "scale(1)";
+        img.style.cursor = "zoom-in";
+        zoomed = false;
+    }
+}
