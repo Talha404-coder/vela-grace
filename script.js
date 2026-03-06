@@ -4,10 +4,10 @@ function scrollShop(){
     document.getElementById("shop").scrollIntoView({behavior:"smooth"})
 }
 
-function quickView(name,price){
+function quickView(name,price,image){
     document.getElementById("quickview").style.display="flex"
     document.getElementById("product-title").innerText=name
-    document.getElementById("product-price").innerText="$"+price
+    document.getElementById("product-image").src=image
 }
 
 function closeQuickView(){
