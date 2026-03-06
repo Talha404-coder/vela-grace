@@ -126,35 +126,63 @@
 
 </section>
 
-<!-- NOTE: The bottom "Payment Options" section was removed per your request.
-     Instead we show a "Connect" (social) section below. -->
+<!-- CONNECT / SOCIAL SECTION -->
+<section class="connect">
 
-<section class="connect" id="connect">
-  <h2>Connect with us</h2>
-  <p>Instagram: <strong>@vela_grace</strong></p>
-  <p>Facebook: <strong>Vela Grace</strong></p>
-  <p>WhatsApp: <strong>+92 309 6502422</strong></p>
-  <p>YouTube: <strong>Vela Grace</strong></p>
+<h2>Connect With Us</h2>
+
+<p>
+Instagram:
+<a href="https://instagram.com/velagrace_official" target="_blank">
+@velagrace_official
+</a>
+</p>
+
+<p>
+Facebook:
+<a href="https://facebook.com/velagrace_official" target="_blank">
+velagrace_official
+</a>
+</p>
+
+<p>
+WhatsApp:
+<a href="https://wa.me/923096502422" target="_blank">
+Chat on WhatsApp
+</a>
+</p>
+
+<p>
+YouTube:
+<a href="https://youtube.com/@velagrace_official" target="_blank">
+velagrace_official
+</a>
+</p>
+
 </section>
 
-<!-- QR Modal (used for QR images AND bank details) -->
+<!-- QR Modal -->
 <div id="qr-modal" class="qr-modal" style="display:none;">
-  <div class="qr-content">
-    <span class="close" onclick="closeQRCode()">&times;</span>
-    <h3 id="qr-title"></h3>
+<div class="qr-content">
+<span class="close" onclick="closeQRCode()">&times;</span>
 
-    <!-- QR image -->
-    <img id="qr-image" src="" alt="QR Code" width="250" style="display:block;margin:12px auto;">
+<h3 id="qr-title"></h3>
 
-    <!-- Bank details block (hidden unless Bank is selected) -->
-    <div id="bank-details" style="display:none;text-align:left;margin-top:12px;">
-      <p><strong>Account Name:</strong> <span id="bank-name"></span></p>
-      <p><strong>Account Number:</strong> <span id="bank-number"></span></p>
-      <p><strong>IBAN:</strong> <span id="bank-iban"></span></p>
-    </div>
+<img id="qr-image" src="" width="250">
 
-    <button onclick="checkoutWhatsApp()">Verify via WhatsApp</button>
-  </div>
+<div id="bank-details" style="display:none">
+
+<p><b>Account Name:</b> Vela Grace</p>
+<p><b>Account Number:</b> 123456789</p>
+<p><b>IBAN:</b> PK00ABCD123456789</p>
+
+</div>
+
+<button onclick="checkoutWhatsApp()">
+Verify via WhatsApp
+</button>
+
+</div>
 </div>
 
 <footer>
@@ -173,25 +201,30 @@ Order via WhatsApp
 
 <div id="cart-items"></div>
 
-<!-- Pay Now button added inside cart -->
-<button onclick="openPaymentOptions()" style="margin-top:20px;padding:10px 20px;cursor:pointer;">
-  Pay Now
+<button onclick="openPaymentOptions()" style="margin-top:20px">
+Pay Now
 </button>
 
 </div>
 
-<!-- Payment Modal (opens from cart Pay Now) -->
-<div id="payment-modal" class="qr-modal" style="display:none;">
-  <div class="qr-content">
-    <span class="close" onclick="closePaymentOptions()">&times;</span>
-    <h3>Select Payment Method</h3>
-    <div style="margin-top:12px;">
-      <button onclick="selectPayment('jazzcash')" style="padding:10px 18px;margin-bottom:8px;cursor:pointer;">JazzCash</button><br>
-      <button onclick="selectPayment('easypaisa')" style="padding:10px 18px;margin-bottom:8px;cursor:pointer;">Easypaisa</button><br>
-      <button onclick="selectPayment('sadapay')" style="padding:10px 18px;margin-bottom:8px;cursor:pointer;">SadaPay</button><br>
-      <button onclick="selectPayment('bank')" style="padding:10px 18px;margin-bottom:8px;cursor:pointer;">Bank Transfer</button>
-    </div>
-  </div>
+<div id="payment-modal" class="qr-modal" style="display:none">
+
+<div class="qr-content">
+
+<span class="close" onclick="closePaymentOptions()">&times;</span>
+
+<h3>Select Payment Method</h3>
+
+<button onclick="selectPayment('jazzcash')">JazzCash</button><br><br>
+
+<button onclick="selectPayment('easypaisa')">Easypaisa</button><br><br>
+
+<button onclick="selectPayment('sadapay')">SadaPay</button><br><br>
+
+<button onclick="selectPayment('bank')">Bank Transfer</button>
+
+</div>
+
 </div>
 
 <div id="quickview" class="quickview">
@@ -200,8 +233,7 @@ Order via WhatsApp
 
 <h2 id="product-title"></h2>
 
-<!-- PRODUCT IMAGE (Quick View) -->
-<img id="product-image" onclick="toggleZoom()" alt="Product"
+<img id="product-image" onclick="toggleZoom()" 
 style="max-width:90%;max-height:70vh;border-radius:10px;object-fit:contain;cursor:zoom-in;transition:0.3s;">
 
 <br><br>
