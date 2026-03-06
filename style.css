@@ -1,0 +1,306 @@
+body{
+    font-family:Arial, sans-serif;
+    margin:0;
+    background:#fafafa;
+    color:#333;
+}
+
+/* NAVBAR */
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 8%;
+    background:white;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:600;
+}
+
+nav a{
+    margin:0 15px;
+    text-decoration:none;
+    color:#333;
+    font-weight:500;
+}
+
+/* HERO SECTION */
+
+.hero{
+    height:90vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:url("https://images.unsplash.com/photo-1603252109303-2751441dd157");
+    background-size:cover;
+    background-position:center;
+    color:white;
+}
+
+.hero h1{
+    font-size:48px;
+    margin-bottom:10px;
+}
+
+.hero p{
+    font-size:18px;
+}
+
+.hero button{
+    padding:12px 25px;
+    border:none;
+    background:black;
+    color:white;
+    cursor:pointer;
+    margin-top:20px;
+    font-size:16px;
+}
+
+/* TRUST SECTION */
+
+.trust{
+    display:flex;
+    justify-content:space-around;
+    padding:60px;
+    background:white;
+    font-size:18px;
+}
+
+/* PRODUCTS */
+
+.products{
+    padding:80px 8%;
+}
+
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+}
+
+.product{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.05);
+    transition:.3s;
+    text-align:center;
+}
+
+.product:hover{
+    transform:translateY(-10px);
+}
+
+.product img{
+    width:100%;
+    border-radius:8px;
+}
+
+/* REVIEWS */
+
+.reviews{
+    padding:80px;
+    background:#f5f5f5;
+    text-align:center;
+}
+
+.review{
+    display:none;
+    font-size:18px;
+}
+
+.review.active{
+    display:block;
+}
+
+/* INSTAGRAM */
+
+.instagram{
+    padding:80px;
+    text-align:center;
+}
+
+.instagram-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:10px;
+}
+
+.instagram img{
+    width:100%;
+    border-radius:6px;
+}
+
+/* NEWSLETTER */
+
+.newsletter{
+    text-align:center;
+    padding:60px;
+    background:white;
+}
+
+.newsletter input{
+    padding:10px;
+    width:250px;
+    margin-right:10px;
+}
+
+.newsletter button{
+    padding:10px 20px;
+    background:black;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    padding:20px;
+    background:#111;
+    color:white;
+}
+
+/* CART */
+
+.cart-panel{
+    position:fixed;
+    right:-350px;
+    top:0;
+    width:350px;
+    height:100%;
+    background:white;
+    box-shadow:-5px 0 20px rgba(0,0,0,0.2);
+    padding:20px;
+    transition:.4s;
+}
+
+.cart-panel.open{
+    right:0;
+}
+
+/* QUICK VIEW */
+
+.quickview{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.6);
+    align-items:center;
+    justify-content:center;
+}
+
+.quickview-content{
+    background:white;
+    padding:40px;
+    border-radius:10px;
+    text-align:center;
+}
+
+/* ------------------------- */
+/* PAYMENT OPTIONS SECTION */
+/* ------------------------- */
+
+.payment-options{
+    padding:60px 8%;
+    background:#f9f9f9;
+    text-align:center;
+}
+
+.payment-methods{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    justify-content:center;
+    align-items:center;
+    margin-top:30px;
+}
+
+.qr-payment{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.qr-payment button{
+    padding:12px 25px;
+    border:none;
+    background:#007bff;
+    color:white;
+    cursor:pointer;
+    border-radius:8px;
+    font-size:16px;
+    margin-top:10px;
+    transition:.2s;
+}
+
+.qr-payment button:hover{
+    background:#0056b3;
+}
+
+.bank-transfer{
+    border:2px dashed #ccc;
+    padding:15px;
+    border-radius:10px;
+    text-align:center;
+    font-size:16px;
+}
+
+/* QR MODAL */
+.qr-modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:10000;
+}
+
+.qr-content{
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    text-align:center;
+    position:relative;
+}
+
+.qr-content .close{
+    position:absolute;
+    top:5px;
+    right:10px;
+    font-size:25px;
+    cursor:pointer;
+}
+
+.qr-content img{
+    margin-top:15px;
+    margin-bottom:20px;
+    max-width:250px;
+    border-radius:8px;
+}
+
+.qr-content button{
+    padding:12px 25px;
+    background:green;
+    color:white;
+    border:none;
+    cursor:pointer;
+    border-radius:8px;
+    font-size:16px;
+}

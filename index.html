@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vela Grace</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+<div class="logo">Vela Grace</div>
+<nav>
+<a href="#">Home</a>
+<a href="#shop">Shop</a>
+<a href="#reviews">Reviews</a>
+<a href="#instagram">Instagram</a>
+</nav>
+
+<div class="cart" onclick="toggleCart()">
+🛒 <span id="cart-count">0</span>
+</div>
+</header>
+
+<section class="hero">
+<div>
+<h1>Elegant Modest Fashion</h1>
+<p>Premium Hijabs & Abayas</p>
+<button onclick="scrollShop()">Shop Collection</button>
+</div>
+</section>
+
+<section class="trust">
+<p>✔ Premium Fabrics</p>
+<p>✔ Trusted by Customers</p>
+<p>✔ Fast Delivery</p>
+</section>
+
+<section class="products" id="shop">
+
+<h2>Shop Collection</h2>
+
+<div class="product-grid">
+
+<div class="product">
+<img src="assets/products/hijab1.jpeg">
+<h3>Silk Hijab</h3>
+<p>$25</p>
+<button onclick="quickView('Silk Hijab',25)">Quick View</button>
+<button onclick="addToCart('Silk Hijab',25)">Add to Cart</button>
+</div>
+
+<div class="product">
+<img src="assets/products/hijab2.jpeg">
+<h3>Chiffon Hijab</h3>
+<p>$20</p>
+<button onclick="quickView('Chiffon Hijab',20)">Quick View</button>
+<button onclick="addToCart('Chiffon Hijab',20)">Add to Cart</button>
+</div>
+
+<div class="product">
+<img src="assets/products/hijab3.jpeg">
+<h3>Silk Hijab</h3>
+<p>$25</p>
+<button onclick="quickView('cotton Hijab',25)">Quick View</button>
+<button onclick="addToCart('cotton Hijab',25)">Add to Cart</button>
+</div>
+
+<div class="product">
+<img src="assets/products/hijab4.jpeg">
+<h3>Chiffon Hijab</h3>
+<p>$20</p>
+<button onclick="quickView('jorget Hijab',20)">Quick View</button>
+<button onclick="addToCart('jorget Hijab',20)">Add to Cart</button>
+</div>
+
+</div>
+</section>
+
+<section class="reviews" id="reviews">
+
+<div class="review active">
+★★★★★
+<p>"Beautiful hijabs and amazing quality!"</p>
+— Ayesha
+</div>
+
+<div class="review">
+★★★★★
+<p>"Fast delivery and premium fabrics."</p>
+— Sana
+</div>
+
+<div class="review">
+★★★★★
+<p>"My favorite modest fashion store!"</p>
+— Zara
+</div>
+
+</section>
+
+<section class="instagram" id="instagram">
+
+<h2>Instagram</h2>
+
+<div class="instagram-grid">
+
+<img src="assets/instagram/1.jpeg">
+<img src="assets/instagram/2.jpeg">
+<img src="assets/instagram/3.jpeg">
+<img src="assets/instagram/4.jpeg">
+
+</div>
+
+</section>
+
+<section class="newsletter">
+
+<h2>Subscribe</h2>
+
+<input type="email" placeholder="Enter email">
+<button>Subscribe</button>
+
+</section>
+
+<!-- Payment Options Section -->
+<section class="payment-options">
+<h2>Payment Options</h2>
+
+<div class="payment-methods">
+
+  <!-- JazzCash -->
+  <div class="qr-payment">
+    <h3>Pay via JazzCash</h3>
+    <button onclick="showQRCode('jazzcash')">Pay with JazzCash</button>
+  </div>
+
+  <!-- Easypaisa -->
+  <div class="qr-payment">
+    <h3>Pay via Easypaisa</h3>
+    <button onclick="showQRCode('easypaisa')">Pay with Easypaisa</button>
+  </div>
+
+  <!-- SadaPay -->
+  <div class="qr-payment">
+    <h3>Pay via SadaPay</h3>
+    <button onclick="showQRCode('sadapay')">Pay with SadaPay</button>
+  </div>
+
+  <!-- Bank Transfer -->
+  <div class="bank-transfer">
+    <p>Bank: ABC Bank</p>
+    <p>Account #: 123456789</p>
+    <p>IBAN: PK00ABCD123456789</p>
+  </div>
+
+</div>
+</section>
+
+<!-- QR Modal (outside payment-methods) -->
+<div id="qr-modal" class="qr-modal" style="display:none;">
+  <div class="qr-content">
+    <span class="close" onclick="closeQRCode()">&times;</span>
+    <h3 id="qr-title"></h3>
+    <img id="qr-image" src="" alt="QR Code" width="250">
+    <button onclick="checkoutWhatsApp()">Send Payment Confirmation via WhatsApp</button>
+  </div>
+</div>
+
+<footer>
+
+<p>© 2026 Vela Grace</p>
+
+<button onclick="checkoutWhatsApp()">
+Order via WhatsApp
+</button>
+
+</footer>
+
+<div id="cart-panel" class="cart-panel">
+
+<h2>Your Cart</h2>
+
+<div id="cart-items"></div>
+
+</div>
+
+<div id="quickview" class="quickview">
+
+<div class="quickview-content">
+
+<h2 id="product-title"></h2>
+
+<p id="product-price"></p>
+
+<button onclick="closeQuickView()">Close</button>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
