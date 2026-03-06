@@ -190,3 +190,5 @@ function toggleZoom(){
         zoomed = false;
     }
 }
+function openPaymentOptions(){ document.getElementById("payment-modal").style.display="flex" }
+function closePaymentOptions(){ document.getElementById("payment-modal").style.display="none" }
