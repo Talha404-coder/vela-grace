@@ -49,7 +49,7 @@
 <img src="assets/products/hijab1.jpeg">
 <h3>Silk Hijab</h3>
 <p>$25</p>
-<button onclick="quickView('Silk Hijab',25)">Quick View</button>
+<button onclick="quickView('Silk Hijab',25,'assets/products/hijab1.jpeg')">Quick View</button>
 <button onclick="addToCart('Silk Hijab',25)">Add to Cart</button>
 </div>
 
@@ -57,7 +57,7 @@
 <img src="assets/products/hijab2.jpeg">
 <h3>Chiffon Hijab</h3>
 <p>$20</p>
-<button onclick="quickView('Chiffon Hijab',20)">Quick View</button>
+<button onclick="quickView('Chiffon Hijab',20,'assets/products/hijab2.jpeg')">Quick View</button>
 <button onclick="addToCart('Chiffon Hijab',20)">Add to Cart</button>
 </div>
 
@@ -65,7 +65,7 @@
 <img src="assets/products/hijab3.jpeg">
 <h3>Silk Hijab</h3>
 <p>$25</p>
-<button onclick="quickView('cotton Hijab',25)">Quick View</button>
+<button onclick="quickView('cotton Hijab',25,'assets/products/hijab3.jpeg')">Quick View</button>
 <button onclick="addToCart('cotton Hijab',25)">Add to Cart</button>
 </div>
 
@@ -73,7 +73,7 @@
 <img src="assets/products/hijab4.jpeg">
 <h3>Chiffon Hijab</h3>
 <p>$20</p>
-<button onclick="quickView('jorget Hijab',20)">Quick View</button>
+<button onclick="quickView('jorget Hijab',20,'assets/products/hijab4.jpeg')">Quick View</button>
 <button onclick="addToCart('jorget Hijab',20)">Add to Cart</button>
 </div>
 
@@ -189,7 +189,10 @@ Order via WhatsApp
 
 <h2 id="product-title"></h2>
 
-<p id="product-price"></p>
+<!-- PRODUCT IMAGE (Quick View) -->
+<img id="product-image" alt="Product" style="max-width:90%;max-height:70vh;border-radius:10px;object-fit:contain;">
+
+<br><br>
 
 <button onclick="closeQuickView()">Close</button>
 
@@ -201,4 +204,3 @@ Order via WhatsApp
 
 </body>
 </html>
-```
