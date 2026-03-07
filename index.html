@@ -45,36 +45,69 @@
 
 <div class="product-grid">
 
-<div class="product">
-<img src="assets/products/hijab1.jpeg">
-<h3>Silk Hijab</h3>
-<p>$25</p>
-<button onclick="quickView('Silk Hijab',25,'assets/products/hijab1.jpeg')">Quick View</button>
-<button onclick="addToCart('Silk Hijab',25)">Add to Cart</button>
+<!-- Product 1 -->
+<div class="product" data-product-id="silk-hijab">
+  <img class="product-main-image" src="assets/products/hijab1.jpeg" alt="Silk Hijab">
+  <h3>Silk Hijab</h3>
+  <p>$25</p>
+
+  <div class="swatches" data-product="silk-hijab">
+    <!-- swatches rendered by JS; initial ones are fallback for non-JS users -->
+    <button class="swatch" onclick="selectVariant('silk-hijab',0,this)" title="Rose Pink" style="background:#f2a6b3"></button>
+    <button class="swatch" onclick="selectVariant('silk-hijab',1,this)" title="Navy Blue" style="background:#173a57"></button>
+    <button class="swatch" onclick="selectVariant('silk-hijab',2,this)" title="Beige" style="background:#e7d7c2"></button>
+  </div>
+
+  <button class="quick-btn" data-product="silk-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
+  <button class="add-btn" data-product="silk-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
 </div>
 
-<div class="product">
-<img src="assets/products/hijab2.jpeg">
-<h3>Chiffon Hijab</h3>
-<p>$20</p>
-<button onclick="quickView('Chiffon Hijab',20,'assets/products/hijab2.jpeg')">Quick View</button>
-<button onclick="addToCart('Chiffon Hijab',20)">Add to Cart</button>
+<!-- Product 2 -->
+<div class="product" data-product-id="chiffon-hijab">
+  <img class="product-main-image" src="assets/products/hijab2.jpeg" alt="Chiffon Hijab">
+  <h3>Chiffon Hijab</h3>
+  <p>$20</p>
+
+  <div class="swatches" data-product="chiffon-hijab">
+    <button class="swatch" onclick="selectVariant('chiffon-hijab',0,this)" title="Dusty Pink" style="background:#dca5a5"></button>
+    <button class="swatch" onclick="selectVariant('chiffon-hijab',1,this)" title="Olive" style="background:#7b8b57"></button>
+    <button class="swatch" onclick="selectVariant('chiffon-hijab',2,this)" title="Black" style="background:#111"></button>
+  </div>
+
+  <button class="quick-btn" data-product="chiffon-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
+  <button class="add-btn" data-product="chiffon-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
 </div>
 
-<div class="product">
-<img src="assets/products/hijab3.jpeg">
-<h3>Silk Hijab</h3>
-<p>$25</p>
-<button onclick="quickView('cotton Hijab',25,'assets/products/hijab3.jpeg')">Quick View</button>
-<button onclick="addToCart('cotton Hijab',25)">Add to Cart</button>
+<!-- Product 3 -->
+<div class="product" data-product-id="cotton-hijab">
+  <img class="product-main-image" src="assets/products/hijab3.jpeg" alt="Cotton Hijab">
+  <h3>Cotton Hijab</h3>
+  <p>$25</p>
+
+  <div class="swatches" data-product="cotton-hijab">
+    <button class="swatch" onclick="selectVariant('cotton-hijab',0,this)" title="Sky Blue" style="background:#a8d0e6"></button>
+    <button class="swatch" onclick="selectVariant('cotton-hijab',1,this)" title="Mustard" style="background:#d6a04b"></button>
+    <button class="swatch" onclick="selectVariant('cotton-hijab',2,this)" title="Cream" style="background:#f3ead6"></button>
+  </div>
+
+  <button class="quick-btn" data-product="cotton-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
+  <button class="add-btn" data-product="cotton-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
 </div>
 
-<div class="product">
-<img src="assets/products/hijab4.jpeg">
-<h3>Chiffon Hijab</h3>
-<p>$20</p>
-<button onclick="quickView('jorget Hijab',20,'assets/products/hijab4.jpeg')">Quick View</button>
-<button onclick="addToCart('jorget Hijab',20)">Add to Cart</button>
+<!-- Product 4 -->
+<div class="product" data-product-id="jorget-hijab">
+  <img class="product-main-image" src="assets/products/hijab4.jpeg" alt="Jorget Hijab">
+  <h3>Chiffon Hijab</h3>
+  <p>$20</p>
+
+  <div class="swatches" data-product="jorget-hijab">
+    <button class="swatch" onclick="selectVariant('jorget-hijab',0,this)" title="Maroon" style="background:#6b2637"></button>
+    <button class="swatch" onclick="selectVariant('jorget-hijab',1,this)" title="Teal" style="background:#0e6b63"></button>
+    <button class="swatch" onclick="selectVariant('jorget-hijab',2,this)" title="Light Grey" style="background:#d6d6d6"></button>
+  </div>
+
+  <button class="quick-btn" data-product="jorget-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
+  <button class="add-btn" data-product="jorget-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
 </div>
 
 </div>
