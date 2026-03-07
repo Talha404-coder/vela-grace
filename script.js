@@ -140,7 +140,7 @@ const PRODUCTS = {
     title: "Silk Hijab",
     price: 25,
     variants: [
-      { colorName: "Rose Pink", colorHex: "#f2a6b3", image: "assets/products/silkhijab1.jpeg" },
+      { colorName: "black", colorHex: "#f2a6b3", image: "Assets/products/silkhijab1-black.jpeg" },
       { colorName: "Navy Blue", colorHex: "#173a57", image: "assets/products/hijab1.jpeg" },
       { colorName: "Beige", colorHex: "#e7d7c2", image: "assets/products/hijab1.jpeg" }
     ]
