@@ -43,10 +43,19 @@
 
 <h2>Shop Collection</h2>
 
+<!-- CATEGORY FILTERS (new) -->
+<div class="category-filters" role="tablist" aria-label="Product categories">
+  <button class="category-btn active" data-cat="all" onclick="filterProducts('all', this)">All</button>
+  <button class="category-btn" data-cat="hijabs" onclick="filterProducts('hijabs', this)">Hijabs</button>
+  <button class="category-btn" data-cat="abayas" onclick="filterProducts('abayas', this)">Abayas</button>
+  <button class="category-btn" data-cat="headcaps" onclick="filterProducts('headcaps', this)">Headcaps</button>
+  <button class="category-btn" data-cat="accessories" onclick="filterProducts('accessories', this)">Accessories</button>
+</div>
+
 <div class="product-grid">
 
 <!-- Product 1 -->
-<div class="product" data-product-id="silk-hijab">
+<div class="product" data-product-id="silk-hijab" data-category="hijabs">
   <img class="product-main-image" src="assets/products/hijab1.jpeg" alt="Silk Hijab">
   <h3>Silk Hijab</h3>
   <p>$25</p>
@@ -60,7 +69,7 @@
 </div>
 
 <!-- Product 2 -->
-<div class="product" data-product-id="chiffon-hijab">
+<div class="product" data-product-id="chiffon-hijab" data-category="hijabs">
   <img class="product-main-image" src="assets/products/hijab2.jpeg" alt="Chiffon Hijab">
   <h3>Chiffon Hijab</h3>
   <p>$20</p>
@@ -74,7 +83,7 @@
 </div>
 
 <!-- Product 3 -->
-<div class="product" data-product-id="cotton-hijab">
+<div class="product" data-product-id="cotton-hijab" data-category="hijabs">
   <img class="product-main-image" src="assets/products/hijab3.jpeg" alt="Cotton Hijab">
   <h3>Cotton Hijab</h3>
   <p>$25</p>
@@ -88,9 +97,9 @@
 </div>
 
 <!-- Product 4 -->
-<div class="product" data-product-id="jorget-hijab">
+<div class="product" data-product-id="jorget-hijab" data-category="hijabs">
   <img class="product-main-image" src="assets/products/hijab4.jpeg" alt="Jorget Hijab">
-  <h3>Chiffon Hijab</h3>
+  <h3>Jorget Hijab</h3>
   <p>$20</p>
 
   <div class="swatches" data-product="jorget-hijab">
