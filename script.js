@@ -212,14 +212,29 @@ function showBankDetails() {
     // hide qr image
     if (qrImage) qrImage.style.display = "none";
 
-    // fill bank details values
-    document.getElementById("bank-name").innerText = bankInfo.name;
-    document.getElementById("bank-number").innerText = bankInfo.number;
-    document.getElementById("bank-iban").innerText = bankInfo.iban;
-
     // set title and show bank block
     qrTitle.innerText = "Bank Transfer Details";
-    if (bankDetailsDiv) bankDetailsDiv.style.display = "block";
+
+    // If the bank details placeholders don't have individual IDs, fill the container
+    if (bankDetailsDiv) {
+        bankDetailsDiv.style.display = "block";
+        // try to find specific ids; otherwise replace innerHTML
+        const nameEl = document.getElementById("bank-name");
+        const numEl = document.getElementById("bank-number");
+        const ibanEl = document.getElementById("bank-iban");
+
+        if (nameEl && numEl && ibanEl) {
+            nameEl.innerText = bankInfo.name;
+            numEl.innerText = bankInfo.number;
+            ibanEl.innerText = bankInfo.iban;
+        } else {
+            bankDetailsDiv.innerHTML = `
+                <p><b>Account Name:</b> ${bankInfo.name}</p>
+                <p><b>Account Number:</b> ${bankInfo.number}</p>
+                <p><b>IBAN:</b> ${bankInfo.iban}</p>
+            `;
+        }
+    }
 
     // ensure payment modal closed (if any)
     const pm = document.getElementById("payment-modal");
@@ -273,3 +288,149 @@ document.getElementById("cart-btn").addEventListener("click",toggleCart);
 
 /* initial cart render (in case existing items are present) */
 updateCart();
+
+/* ===========================
+   New: Product variant support
+   =========================== */
+
+/* PRODUCTS map: update image paths if your variant images have different filenames */
+const PRODUCTS = {
+  "silk-hijab": {
+    title: "Silk Hijab",
+    price: 25,
+    variants: [
+      { colorName: "Rose Pink", colorHex: "#f2a6b3", image: "assets/products/hijab1.jpeg" },
+      { colorName: "Navy Blue", colorHex: "#173a57", image: "assets/products/hijab1.jpeg" },
+      { colorName: "Beige", colorHex: "#e7d7c2", image: "assets/products/hijab1.jpeg" }
+    ]
+  },
+  "chiffon-hijab": {
+    title: "Chiffon Hijab",
+    price: 20,
+    variants: [
+      { colorName: "Dusty Pink", colorHex: "#dca5a5", image: "assets/products/hijab2.jpeg" },
+      { colorName: "Olive", colorHex: "#7b8b57", image: "assets/products/hijab2.jpeg" },
+      { colorName: "Black", colorHex: "#111111", image: "assets/products/hijab2.jpeg" }
+    ]
+  },
+  "cotton-hijab": {
+    title: "Cotton Hijab",
+    price: 25,
+    variants: [
+      { colorName: "Sky Blue", colorHex: "#a8d0e6", image: "assets/products/hijab3.jpeg" },
+      { colorName: "Mustard", colorHex: "#d6a04b", image: "assets/products/hijab3.jpeg" },
+      { colorName: "Cream", colorHex: "#f3ead6", image: "assets/products/hijab3.jpeg" }
+    ]
+  },
+  "jorget-hijab": {
+    title: "Jorget Hijab",
+    price: 20,
+    variants: [
+      { colorName: "Maroon", colorHex: "#6b2637", image: "assets/products/hijab4.jpeg" },
+      { colorName: "Teal", colorHex: "#0e6b63", image: "assets/products/hijab4.jpeg" },
+      { colorName: "Light Grey", colorHex: "#d6d6d6", image: "assets/products/hijab4.jpeg" }
+    ]
+  }
+};
+
+/* Render swatches & set default selection for each product card on page load */
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".product").forEach(productCard => {
+    const pid = productCard.dataset.productId;
+    const productData = PRODUCTS[pid];
+    if (!productData) return;
+
+    const swatchesContainer = productCard.querySelector(".swatches");
+    const mainImg = productCard.querySelector(".product-main-image");
+
+    // Clean container and render swatches based on PRODUCTS map
+    if (swatchesContainer) {
+      swatchesContainer.innerHTML = ""; // clear fallback
+      productData.variants.forEach((v, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "swatch";
+        btn.title = v.colorName;
+        btn.setAttribute("aria-label", `${productData.title} — ${v.colorName}`);
+        btn.style.background = v.colorHex || "#eee";
+
+        // small thumbnail background if you prefer to use image rather than color:
+        // btn.style.backgroundImage = `url(${v.image})`;
+
+        btn.addEventListener("click", () => selectVariant(pid, idx, btn));
+
+        // hover preview
+        btn.addEventListener("mouseenter", () => {
+          if (mainImg && v.image) mainImg.src = v.image;
+        });
+        btn.addEventListener("mouseleave", () => {
+          // revert to currently selected variant image
+          const selected = productCard.querySelector(".quick-btn")?.dataset.variant || 0;
+          const selV = productData.variants[selected] || productData.variants[0];
+          if (mainImg && selV && selV.image) mainImg.src = selV.image;
+        });
+
+        swatchesContainer.appendChild(btn);
+      });
+    }
+
+    // set default variant = 0 on quick/add buttons
+    const quickBtn = productCard.querySelector(".quick-btn");
+    const addBtn = productCard.querySelector(".add-btn");
+    if (quickBtn) quickBtn.dataset.variant = 0;
+    if (addBtn) addBtn.dataset.variant = 0;
+
+    // ensure main image uses variant 0 image
+    if (mainImg && productData.variants[0] && productData.variants[0].image) {
+      mainImg.src = productData.variants[0].image;
+    }
+  });
+});
+
+/* When a swatch is clicked, update product card state (image and data-variant on buttons) */
+function selectVariant(productId, variantIndex, el) {
+  const productCard = document.querySelector(`.product[data-product-id="${productId}"]`);
+  if (!productCard) return;
+
+  const productData = PRODUCTS[productId];
+  if (!productData) return;
+
+  const variant = productData.variants[variantIndex];
+  if (!variant) return;
+
+  // update image in the card
+  const mainImg = productCard.querySelector(".product-main-image");
+  if (mainImg && variant.image) mainImg.src = variant.image;
+
+  // update quick / add buttons' dataset to point to this variant
+  const quickBtn = productCard.querySelector(".quick-btn");
+  const addBtn = productCard.querySelector(".add-btn");
+  if (quickBtn) quickBtn.dataset.variant = variantIndex;
+  if (addBtn) addBtn.dataset.variant = variantIndex;
+
+  // visually mark selected swatch
+  productCard.querySelectorAll(".swatch").forEach((s, i) => {
+    if (i === variantIndex) s.classList.add("swatch-selected");
+    else s.classList.remove("swatch-selected");
+  });
+}
+
+/* Helper used by quick view buttons that pass the button element */
+function quickViewFromBtn(btn) {
+  const pid = btn.dataset.product;
+  const vid = parseInt(btn.dataset.variant || 0, 10);
+  const product = PRODUCTS[pid];
+  if (!product) return;
+  const variant = product.variants[vid] || product.variants[0];
+  quickView(`${product.title} — ${variant.colorName}`, product.price, variant.image);
+}
+
+/* Helper used by add to cart buttons that pass the button element */
+function addToCartFromBtn(btn) {
+  const pid = btn.dataset.product;
+  const vid = parseInt(btn.dataset.variant || 0, 10);
+  const product = PRODUCTS[pid];
+  if (!product) return;
+  const variant = product.variants[vid] || product.variants[0];
+  // Keep existing addToCart API (name, price)
+  addToCart(`${product.title} — ${variant.colorName}`, product.price);
+}
