@@ -342,6 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const swatchesContainer = productCard.querySelector(".swatches");
     const mainImg = productCard.querySelector(".product-main-image");
+    const title = productCard.querySelector("h3");
 
     // Clean container and render swatches based on PRODUCTS map
     if (swatchesContainer) {
@@ -353,9 +354,6 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.setAttribute("aria-label", `${productData.title} — ${v.colorName}`);
         btn.style.background = v.colorHex || "#eee";
 
-        // small thumbnail background if you prefer to use image rather than color:
-        // btn.style.backgroundImage = `url(${v.image})`;
-
         btn.addEventListener("click", () => selectVariant(pid, idx, btn));
 
         // hover preview
@@ -364,7 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         btn.addEventListener("mouseleave", () => {
           // revert to currently selected variant image
-          const selected = productCard.querySelector(".quick-btn")?.dataset.variant || 0;
+          const selected = parseInt(productCard.querySelector(".quick-btn")?.dataset.variant || 0, 10);
           const selV = productData.variants[selected] || productData.variants[0];
           if (mainImg && selV && selV.image) mainImg.src = selV.image;
         });
@@ -379,14 +377,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (quickBtn) quickBtn.dataset.variant = 0;
     if (addBtn) addBtn.dataset.variant = 0;
 
-    // ensure main image uses variant 0 image
+    // ensure main image uses variant 0 image and update title to include color
     if (mainImg && productData.variants[0] && productData.variants[0].image) {
       mainImg.src = productData.variants[0].image;
     }
+    if (title && productData.variants[0]) {
+      title.innerText = `${productData.title} - ${productData.variants[0].colorName}`;
+    }
+
+    // visually mark the first swatch as selected after render
+    const firstSwatch = productCard.querySelector(".swatch");
+    if (firstSwatch) firstSwatch.classList.add("swatch-selected");
   });
 });
 
-/* When a swatch is clicked, update product card state (image and data-variant on buttons) */
+/* When a swatch is clicked, update product card state (image and data-variant on buttons)
+   **This is the updated function you requested**: it fully updates the product card so
+   clicking a color acts like switching the product to that color version. */
 function selectVariant(productId, variantIndex, el) {
   const productCard = document.querySelector(`.product[data-product-id="${productId}"]`);
   if (!productCard) return;
@@ -400,6 +407,10 @@ function selectVariant(productId, variantIndex, el) {
   // update image in the card
   const mainImg = productCard.querySelector(".product-main-image");
   if (mainImg && variant.image) mainImg.src = variant.image;
+
+  // update product title to show selected color
+  const title = productCard.querySelector("h3");
+  if (title) title.innerText = `${productData.title} - ${variant.colorName}`;
 
   // update quick / add buttons' dataset to point to this variant
   const quickBtn = productCard.querySelector(".quick-btn");
