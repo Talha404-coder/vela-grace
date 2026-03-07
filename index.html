@@ -1,147 +1,284 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vela Grace</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">Vela Grace</div>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#shop">Shop</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#instagram">Instagram</a>
+  </nav>
+
+  <button id="cart-btn" class="cart-btn" aria-label="Open cart">
+    🛒 <span id="cart-count" class="cart-count">0</span>
+  </button>
+
+</header>
+
+<section class="hero">
+  <div>
+    <h1>Elegant Modest Fashion</h1>
+    <p>Premium Hijabs & Abayas</p>
+    <button onclick="scrollShop()">Shop Collection</button>
+  </div>
+</section>
+
+<section class="trust">
+  <p>✔ Premium Fabrics</p>
+  <p>✔ Trusted by Customers</p>
+  <p>✔ Fast Delivery</p>
+</section>
+
 <section class="products" id="shop">
 
-<h2>Our Collection</h2>
+  <h2>Shop Collection</h2>
 
-<div class="category-filters">
-<button class="category-btn active" onclick="filterProducts('all',this)">All</button>
-<button class="category-btn" onclick="filterProducts('hijabs',this)">Hijabs</button>
-<button class="category-btn" onclick="filterProducts('abayas',this)">Abayas</button>
-<button class="category-btn" onclick="filterProducts('headcaps',this)">Headcaps</button>
-<button class="category-btn" onclick="filterProducts('accessories',this)">Accessories</button>
-</div>
+  <!-- CATEGORY FILTERS (new) -->
+  <div class="category-filters" role="tablist" aria-label="Product categories">
+    <button class="category-btn active" data-cat="all" onclick="filterProducts('all', this)">All</button>
+    <button class="category-btn" data-cat="hijabs" onclick="filterProducts('hijabs', this)">Hijabs</button>
+    <button class="category-btn" data-cat="abayas" onclick="filterProducts('abayas', this)">Abayas</button>
+    <button class="category-btn" data-cat="headcaps" onclick="filterProducts('headcaps', this)">Headcaps</button>
+    <button class="category-btn" data-cat="accessories" onclick="filterProducts('accessories', this)">Accessories</button>
+  </div>
 
-<div class="product-grid">
+  <div class="product-grid">
 
-<!-- PRODUCT 1 -->
-<div class="product" data-product-id="silk-hijab" data-category="hijabs">
+    <!-- Product 1 -->
+    <div class="product" data-product-id="silk-hijab" data-category="hijabs">
+      <img class="product-main-image" src="assets/products/hijab1.jpeg" alt="Vela Grace - Silk Hijab (black)" loading="lazy">
+      <h3>Silk Hijab</h3>
+      <p>$25</p>
 
-<img 
-class="product-main-image"
-src="assets/products/silkhijab1-black.jpeg"
-loading="lazy"
-alt="Vela Grace Silk Hijab"
->
+      <div class="swatches" data-product="silk-hijab">
+        <!-- swatches rendered/managed by JS -->
+      </div>
 
-<h3>Silk Hijab</h3>
+      <button class="quick-btn" data-product="silk-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
+      <button class="add-btn" data-product="silk-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
+    </div>
 
-<div class="swatches"></div>
+    <!-- Product 2 -->
+    <div class="product" data-product-id="chiffon-hijab" data-category="hijabs">
+      <img class="product-main-image" src="assets/products/hijab2.jpeg" alt="Vela Grace - Chiffon Hijab (dusty pink)" loading="lazy">
+      <h3>Chiffon Hijab</h3>
+      <p>$20</p>
 
-<p>$25</p>
+      <div class="swatches" data-product="chiffon-hijab">
+        <!-- swatches rendered/managed by JS -->
+      </div>
 
-<button
-class="quick-btn"
-data-product="silk-hijab"
-onclick="quickViewFromBtn(this)">
-Quick View
-</button>
+      <button class="quick-btn" data-product="chiffon-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
+      <button class="add-btn" data-product="chiffon-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
+    </div>
 
-<button
-class="add-btn"
-data-product="silk-hijab"
-onclick="addToCartFromBtn(this)">
-Add To Cart
-</button>
+    <!-- Product 3 -->
+    <div class="product" data-product-id="cotton-hijab" data-category="hijabs">
+      <img class="product-main-image" src="assets/products/hijab3.jpeg" alt="Vela Grace - Cotton Hijab (sky blue)" loading="lazy">
+      <h3>Cotton Hijab</h3>
+      <p>$25</p>
 
-</div>
+      <div class="swatches" data-product="cotton-hijab">
+        <!-- swatches rendered/managed by JS -->
+      </div>
 
+      <button class="quick-btn" data-product="cotton-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
+      <button class="add-btn" data-product="cotton-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
+    </div>
 
-<!-- PRODUCT 2 -->
-<div class="product" data-product-id="chiffon-hijab" data-category="hijabs">
+    <!-- Product 4 -->
+    <div class="product" data-product-id="jorget-hijab" data-category="hijabs">
+      <img class="product-main-image" src="assets/products/hijab4.jpeg" alt="Vela Grace - Jorget Hijab (maroon)" loading="lazy">
+      <h3>Jorget Hijab</h3>
+      <p>$20</p>
 
-<img
-class="product-main-image"
-src="assets/products/hijab2.jpeg"
-loading="lazy"
-alt="Vela Grace Chiffon Hijab"
->
+      <div class="swatches" data-product="jorget-hijab">
+        <!-- swatches rendered/managed by JS -->
+      </div>
 
-<h3>Chiffon Hijab</h3>
+      <button class="quick-btn" data-product="jorget-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
+      <button class="add-btn" data-product="jorget-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
+    </div>
 
-<div class="swatches"></div>
-
-<p>$20</p>
-
-<button
-class="quick-btn"
-data-product="chiffon-hijab"
-onclick="quickViewFromBtn(this)">
-Quick View
-</button>
-
-<button
-class="add-btn"
-data-product="chiffon-hijab"
-onclick="addToCartFromBtn(this)">
-Add To Cart
-</button>
-
-</div>
-
-
-<!-- PRODUCT 3 -->
-<div class="product" data-product-id="cotton-hijab" data-category="hijabs">
-
-<img
-class="product-main-image"
-src="assets/products/hijab3.jpeg"
-loading="lazy"
-alt="Vela Grace Cotton Hijab"
->
-
-<h3>Cotton Hijab</h3>
-
-<div class="swatches"></div>
-
-<p>$25</p>
-
-<button
-class="quick-btn"
-data-product="cotton-hijab"
-onclick="quickViewFromBtn(this)">
-Quick View
-</button>
-
-<button
-class="add-btn"
-data-product="cotton-hijab"
-onclick="addToCartFromBtn(this)">
-Add To Cart
-</button>
-
-</div>
-
-
-<!-- PRODUCT 4 -->
-<div class="product" data-product-id="jorget-hijab" data-category="hijabs">
-
-<img
-class="product-main-image"
-src="assets/products/hijab4.jpeg"
-loading="lazy"
-alt="Vela Grace Jorget Hijab"
->
-
-<h3>Jorget Hijab</h3>
-
-<div class="swatches"></div>
-
-<p>$20</p>
-
-<button
-class="quick-btn"
-data-product="jorget-hijab"
-onclick="quickViewFromBtn(this)">
-Quick View
-</button>
-
-<button
-class="add-btn"
-data-product="jorget-hijab"
-onclick="addToCartFromBtn(this)">
-Add To Cart
-</button>
-
-</div>
-
-</div>
+  </div>
 </section>
+
+<section class="reviews" id="reviews">
+
+  <div class="review active">
+    ★★★★★
+    <p>"Beautiful hijabs and amazing quality!"</p>
+    — Ayesha
+  </div>
+
+  <div class="review">
+    ★★★★★
+    <p>"Fast delivery and premium fabrics."</p>
+    — Sana
+  </div>
+
+  <div class="review">
+    ★★★★★
+    <p>"My favorite modest fashion store!"</p>
+    — Zara
+  </div>
+
+</section>
+
+<section class="instagram" id="instagram">
+
+  <h2>Instagram</h2>
+
+  <div class="instagram-grid">
+
+    <img src="assets/instagram/1.jpeg" alt="Vela Grace Instagram image 1" loading="lazy">
+    <img src="assets/instagram/2.jpeg" alt="Vela Grace Instagram image 2" loading="lazy">
+    <img src="assets/instagram/3.jpeg" alt="Vela Grace Instagram image 3" loading="lazy">
+    <img src="assets/instagram/4.jpeg" alt="Vela Grace Instagram image 4" loading="lazy">
+
+  </div>
+
+</section>
+
+<section class="newsletter">
+
+  <h2>Subscribe</h2>
+
+  <input type="email" placeholder="Enter email" aria-label="Email address">
+  <button>Subscribe</button>
+
+</section>
+
+<!-- CONNECT / SOCIAL SECTION -->
+<section class="connect">
+
+  <h2>Connect With Us</h2>
+
+  <p>
+    Instagram:
+    <a href="https://instagram.com/velagrace_official" target="_blank" rel="noopener noreferrer">
+      @velagrace_official
+    </a>
+  </p>
+
+  <p>
+    Facebook:
+    <a href="https://facebook.com/velagrace_official" target="_blank" rel="noopener noreferrer">
+      velagrace_official
+    </a>
+  </p>
+
+  <p>
+    WhatsApp:
+    <a href="https://wa.me/923096502422" target="_blank" rel="noopener noreferrer">
+      Chat on WhatsApp
+    </a>
+  </p>
+
+  <p>
+    YouTube:
+    <a href="https://youtube.com/@velagrace_official" target="_blank" rel="noopener noreferrer">
+      velagrace_official
+    </a>
+  </p>
+
+</section>
+
+<!-- QR Modal -->
+<div id="qr-modal" class="qr-modal" style="display:none;">
+  <div class="qr-content">
+    <span class="close" onclick="closeQRCode()">&times;</span>
+
+    <h3 id="qr-title"></h3>
+
+    <img id="qr-image" src="" width="250" alt="Payment QR code" loading="lazy">
+
+    <div id="bank-details" style="display:none">
+
+      <p><b>Account Name:</b> Vela Grace</p>
+      <p><b>Account Number:</b> 123456789</p>
+      <p><b>IBAN:</b> PK00ABCD123456789</p>
+
+    </div>
+
+    <button onclick="checkoutWhatsApp()">
+      Verify via WhatsApp
+    </button>
+
+  </div>
+</div>
+
+<footer>
+
+  <p>© 2026 Vela Grace</p>
+
+  <button onclick="checkoutWhatsApp()">
+    Order via WhatsApp
+  </button>
+
+</footer>
+
+<div id="cart-panel" class="cart-panel">
+
+  <h2>Your Cart</h2>
+
+  <div id="cart-items"></div>
+
+  <button onclick="openPaymentOptions()" style="margin-top:20px">
+    Pay Now
+  </button>
+
+</div>
+
+<div id="payment-modal" class="qr-modal" style="display:none">
+
+  <div class="qr-content">
+
+    <span class="close" onclick="closePaymentOptions()">&times;</span>
+
+    <h3>Select Payment Method</h3>
+
+    <button onclick="selectPayment('jazzcash')">JazzCash</button><br><br>
+
+    <button onclick="selectPayment('easypaisa')">Easypaisa</button><br><br>
+
+    <button onclick="selectPayment('sadapay')">SadaPay</button><br><br>
+
+    <button onclick="selectPayment('bank')">Bank Transfer</button>
+
+  </div>
+
+</div>
+
+<div id="quickview" class="quickview">
+
+  <div class="quickview-content">
+
+    <h2 id="product-title"></h2>
+
+    <img id="product-image" onclick="toggleZoom()" 
+      style="max-width:90%;max-height:70vh;border-radius:10px;object-fit:contain;cursor:zoom-in;transition:0.3s;"
+      alt="Product image" loading="lazy">
+
+    <br><br>
+
+    <button onclick="closeQuickView()">Close</button>
+
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
