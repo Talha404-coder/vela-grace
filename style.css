@@ -115,6 +115,34 @@ nav a{
     border-radius:8px;
 }
 
+/* SWATCHES */
+.swatches{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin:12px 0 10px 0;
+}
+
+.swatch{
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    border:2px solid #eee;
+    cursor:pointer;
+    outline:none;
+    transition:transform .12s, box-shadow .12s;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.03) inset;
+}
+
+.swatch:hover{
+    transform:scale(1.05);
+}
+
+.swatch-selected{
+    box-shadow:0 0 0 3px rgba(0,0,0,0.08);
+    border-color:#333;
+}
+
 /* REVIEWS */
 
 .reviews{
