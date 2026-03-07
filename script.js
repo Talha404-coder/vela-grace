@@ -141,7 +141,7 @@ const PRODUCTS = {
     price: 25,
     variants: [
       { colorName: "black", colorHex: "#111111", image: "Assets/products/silkhijab1-black.jpeg" },
-      { colorName: "Navy Blue", colorHex: "#173a57", image: "assets/products/hijab1.jpeg" },
+      { colorName: "maroon", colorHex: "#6b2637", image: "assets/products/silkhijab1-maroon.jpeg" },
       { colorName: "Beige", colorHex: "#e7d7c2", image: "assets/products/hijab1.jpeg" }
     ]
   },
