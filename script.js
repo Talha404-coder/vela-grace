@@ -5,7 +5,7 @@ function scrollShop(){
     document.getElementById("shop").scrollIntoView({behavior:"smooth"})
 }
 
-/* QUICK VIEW: updated to accept image (keep this change) */
+/* QUICK VIEW */
 function quickView(name,price,image){
     document.getElementById("quickview").style.display="flex"
     document.getElementById("product-title").innerText=name
@@ -16,7 +16,7 @@ function closeQuickView(){
     document.getElementById("quickview").style.display="none"
 }
 
-/* CART: improved but kept same API so nothing else breaks */
+/* CART */
 function addToCart(name,price){
 
     let existing = cart.find(item => item.name === name)
@@ -80,182 +80,25 @@ function toggleCart(){
     document.getElementById("cart-panel").classList.toggle("open")
 }
 
-/* Replace this number with your WhatsApp number (country code + number, no +) */
+/* WhatsApp */
 const WHATSAPP_NUMBER = "923096502422";
 
-/* selected payment method global, used for WhatsApp message and for ui state */
-let selectedPaymentMethod = null;
-let bankInfo = {
-    name: "ABC Company",
-    number: "123456789",
-    iban: "PK00ABCD123456789"
-};
+let selectedPaymentMethod = null
 
 function checkoutWhatsApp() {
+
     if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
+        alert("Your cart is empty!")
+        return
     }
 
-    let message = "Hello! I want to order:%0A";
+    let message = "Hello! I want to order:%0A"
 
-    cart.forEach(item => {
-        message += `${item.name} - Qty: ${item.quantity} - $${item.price * item.quantity}%0A`;
-    });
+    cart.forEach(item=>{
+        message += `${item.name} - Qty: ${item.quantity}%0A`
+    })
 
-    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    message += `%0ATotal: $${total}`;
-
-    if (selectedPaymentMethod) {
-        // add payment method context
-        if (selectedPaymentMethod === 'bank') {
-            message += `%0A%0APayment method: Bank Transfer%0AAccount Name: ${bankInfo.name}%0AAccount Number: ${bankInfo.number}%0AIBAN: ${bankInfo.iban}`;
-        } else {
-            const pretty = selectedPaymentMethod.charAt(0).toUpperCase() + selectedPaymentMethod.slice(1);
-            message += `%0A%0APayment method: ${pretty}`;
-        }
-    }
-
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, "_blank");
-}
-
-/* --- QR Modal functionality for payments --- */
-const qrFiles = {
-    jazzcash: "jazzcash.jpeg",
-    easypaisa: "easypaisa.png",
-    sadapay: "sadapay.png"
-};
-
-/* try multiple paths/extensions for QR (keep same approach) */
-function setImageWithFallback(imgEl, filename) {
-    const bases = ["assets/payments/", "Assets/payments/"];
-    const commonExts = [".jpeg", ".jpg", ".png"];
-
-    const dot = filename.lastIndexOf(".");
-    const baseName = dot > -1 ? filename.slice(0, dot) : filename;
-    const originalExt = dot > -1 ? filename.slice(dot) : "";
-    const exts = [originalExt].concat(commonExts.filter(e => e !== originalExt));
-
-    const candidates = [];
-    bases.forEach(base => {
-        exts.forEach(ext => candidates.push(base + baseName + ext));
-    });
-
-    let i = 0;
-    imgEl.style.display = "";
-    imgEl.src = candidates[0];
-
-    imgEl.onerror = function () {
-        i++;
-        if (i < candidates.length) {
-            imgEl.src = candidates[i];
-        } else {
-            imgEl.style.display = "none";
-            document.getElementById("qr-title").innerText = "QR not found — please check assets folder / file name";
-        }
-    };
-}
-
-/* New: unified function to select payment method from the payment modal.
-   It closes the payment modal and either shows a QR (for wallet methods)
-   or shows bank details (for 'bank'). */
-function selectPayment(method) {
-    selectedPaymentMethod = method;
-
-    // close the select-payment modal if open
-    const pm = document.getElementById("payment-modal");
-    if (pm) pm.style.display = "none";
-
-    if (method === 'bank') {
-        showBankDetails();
-    } else {
-        showQRCode(method);
-    }
-}
-
-/* show QR - closes payment modal first so selection modal doesn't remain on top */
-function showQRCode(method){
-    const qrModal = document.getElementById("qr-modal");
-    const qrTitle = document.getElementById("qr-title");
-    const qrImage = document.getElementById("qr-image");
-    const bankDetailsDiv = document.getElementById("bank-details");
-
-    // hide bank details if previously shown
-    if (bankDetailsDiv) bankDetailsDiv.style.display = "none";
-    if (qrImage) qrImage.style.display = "block";
-
-    qrTitle.innerText = `Scan QR for ${method.charAt(0).toUpperCase() + method.slice(1)}`;
-
-    // close the payment options popup (if any)
-    const pm = document.getElementById("payment-modal");
-    if (pm) pm.style.display = "none";
-
-    qrModal.style.display = "flex";
-
-    const filename = qrFiles[method];
-    if (!filename) {
-        qrTitle.innerText = "QR file not configured for this method";
-        qrImage.style.display = "none";
-        return;
-    }
-
-    setImageWithFallback(qrImage, filename);
-}
-
-/* show bank details inside the same modal (no QR image) */
-function showBankDetails() {
-    const qrModal = document.getElementById("qr-modal");
-    const qrTitle = document.getElementById("qr-title");
-    const qrImage = document.getElementById("qr-image");
-    const bankDetailsDiv = document.getElementById("bank-details");
-
-    // hide qr image
-    if (qrImage) qrImage.style.display = "none";
-
-    // set title and show bank block
-    qrTitle.innerText = "Bank Transfer Details";
-
-    // If the bank details placeholders don't have individual IDs, fill the container
-    if (bankDetailsDiv) {
-        bankDetailsDiv.style.display = "block";
-        // try to find specific ids; otherwise replace innerHTML
-        const nameEl = document.getElementById("bank-name");
-        const numEl = document.getElementById("bank-number");
-        const ibanEl = document.getElementById("bank-iban");
-
-        if (nameEl && numEl && ibanEl) {
-            nameEl.innerText = bankInfo.name;
-            numEl.innerText = bankInfo.number;
-            ibanEl.innerText = bankInfo.iban;
-        } else {
-            bankDetailsDiv.innerHTML = `
-                <p><b>Account Name:</b> ${bankInfo.name}</p>
-                <p><b>Account Number:</b> ${bankInfo.number}</p>
-                <p><b>IBAN:</b> ${bankInfo.iban}</p>
-            `;
-        }
-    }
-
-    // ensure payment modal closed (if any)
-    const pm = document.getElementById("payment-modal");
-    if (pm) pm.style.display = "none";
-
-    // show the modal
-    qrModal.style.display = "flex";
-}
-
-/* close QR / bank modal */
-function closeQRCode(){
-    document.getElementById("qr-modal").style.display = "none";
-}
-
-/* small helpers to open/close the selection modal (Pay Now) */
-function openPaymentOptions(){
-    document.getElementById("payment-modal").style.display="flex"
-}
-
-function closePaymentOptions(){
-    document.getElementById("payment-modal").style.display="none"
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`,"_blank")
 }
 
 /* --- Review slider --- */
@@ -267,34 +110,32 @@ setInterval(()=>{
     reviews[index].classList.add("active")
 },4000)
 
-/* ZOOM for quickview image */
-let zoomed = false;
+/* ZOOM */
+let zoomed = false
 function toggleZoom(){
-    const img = document.getElementById("product-image");
-    if(!img) return;
+    const img = document.getElementById("product-image")
+    if(!img) return
+
     if(!zoomed){
-        img.style.transform = "scale(2)";
-        img.style.cursor = "zoom-out";
-        zoomed = true;
+        img.style.transform = "scale(2)"
+        zoomed = true
     }else{
-        img.style.transform = "scale(1)";
-        img.style.cursor = "zoom-in";
-        zoomed = false;
+        img.style.transform = "scale(1)"
+        zoomed = false
     }
 }
 
-/* CART button click to open/close cart panel */
-document.getElementById("cart-btn").addEventListener("click",toggleCart);
+/* CART button */
+document.getElementById("cart-btn").addEventListener("click",toggleCart)
 
-/* initial cart render (in case existing items are present) */
-updateCart();
+updateCart()
 
 /* ===========================
-   New: Product variant support
+   Product Variant System
    =========================== */
 
-/* PRODUCTS map: update image paths if your variant images have different filenames */
 const PRODUCTS = {
+
   "silk-hijab": {
     title: "Silk Hijab",
     price: 25,
@@ -304,6 +145,7 @@ const PRODUCTS = {
       { colorName: "Beige", colorHex: "#e7d7c2", image: "assets/products/hijab1.jpeg" }
     ]
   },
+
   "chiffon-hijab": {
     title: "Chiffon Hijab",
     price: 20,
@@ -313,6 +155,7 @@ const PRODUCTS = {
       { colorName: "Black", colorHex: "#111111", image: "assets/products/hijab2.jpeg" }
     ]
   },
+
   "cotton-hijab": {
     title: "Cotton Hijab",
     price: 25,
@@ -322,6 +165,7 @@ const PRODUCTS = {
       { colorName: "Cream", colorHex: "#f3ead6", image: "assets/products/hijab3.jpeg" }
     ]
   },
+
   "jorget-hijab": {
     title: "Jorget Hijab",
     price: 20,
@@ -331,117 +175,100 @@ const PRODUCTS = {
       { colorName: "Light Grey", colorHex: "#d6d6d6", image: "assets/products/hijab4.jpeg" }
     ]
   }
-};
 
-/* Render swatches & set default selection for each product card on page load */
+}
+
+/* Render swatches */
 document.addEventListener("DOMContentLoaded", () => {
+
   document.querySelectorAll(".product").forEach(productCard => {
-    const pid = productCard.dataset.productId;
-    const productData = PRODUCTS[pid];
-    if (!productData) return;
 
-    const swatchesContainer = productCard.querySelector(".swatches");
-    const mainImg = productCard.querySelector(".product-main-image");
-    const title = productCard.querySelector("h3");
+    const pid = productCard.dataset.productId
+    const productData = PRODUCTS[pid]
+    if (!productData) return
 
-    // Clean container and render swatches based on PRODUCTS map
-    if (swatchesContainer) {
-      swatchesContainer.innerHTML = ""; // clear fallback
-      productData.variants.forEach((v, idx) => {
-        const btn = document.createElement("button");
-        btn.className = "swatch";
-        btn.title = v.colorName;
-        btn.setAttribute("aria-label", `${productData.title} — ${v.colorName}`);
-        btn.style.background = v.colorHex || "#eee";
+    const swatchesContainer = productCard.querySelector(".swatches")
+    const mainImg = productCard.querySelector(".product-main-image")
+    const title = productCard.querySelector("h3")
 
-        btn.addEventListener("click", () => selectVariant(pid, idx, btn));
+    swatchesContainer.innerHTML=""
 
-        // hover preview
-        btn.addEventListener("mouseenter", () => {
-          if (mainImg && v.image) mainImg.src = v.image;
-        });
-        btn.addEventListener("mouseleave", () => {
-          // revert to currently selected variant image
-          const selected = parseInt(productCard.querySelector(".quick-btn")?.dataset.variant || 0, 10);
-          const selV = productData.variants[selected] || productData.variants[0];
-          if (mainImg && selV && selV.image) mainImg.src = selV.image;
-        });
+    productData.variants.forEach((v,idx)=>{
 
-        swatchesContainer.appendChild(btn);
-      });
-    }
+      const btn=document.createElement("button")
+      btn.className="swatch"
+      btn.style.background=v.colorHex
+      btn.title=v.colorName
 
-    // set default variant = 0 on quick/add buttons
-    const quickBtn = productCard.querySelector(".quick-btn");
-    const addBtn = productCard.querySelector(".add-btn");
-    if (quickBtn) quickBtn.dataset.variant = 0;
-    if (addBtn) addBtn.dataset.variant = 0;
+      btn.onclick=()=>selectVariant(pid,idx)
 
-    // ensure main image uses variant 0 image and update title to include color
-    if (mainImg && productData.variants[0] && productData.variants[0].image) {
-      mainImg.src = productData.variants[0].image;
-    }
-    if (title && productData.variants[0]) {
-      title.innerText = `${productData.title} - ${productData.variants[0].colorName}`;
-    }
+      swatchesContainer.appendChild(btn)
 
-    // visually mark the first swatch as selected after render
-    const firstSwatch = productCard.querySelector(".swatch");
-    if (firstSwatch) firstSwatch.classList.add("swatch-selected");
-  });
-});
+    })
 
-/* When a swatch is clicked, update product card state (image and data-variant on buttons)
-   **This is the updated function you requested**: it fully updates the product card so
-   clicking a color acts like switching the product to that color version. */
-function selectVariant(productId, variantIndex, el) {
-  const productCard = document.querySelector(`.product[data-product-id="${productId}"]`);
-  if (!productCard) return;
+    productCard.querySelector(".quick-btn").dataset.variant=0
+    productCard.querySelector(".add-btn").dataset.variant=0
 
-  const productData = PRODUCTS[productId];
-  if (!productData) return;
+    mainImg.src=productData.variants[0].image
+    title.innerText=`${productData.title} - ${productData.variants[0].colorName}`
 
-  const variant = productData.variants[variantIndex];
-  if (!variant) return;
+    const first=productCard.querySelector(".swatch")
+    if(first) first.classList.add("swatch-selected")
 
-  // update image in the card
-  const mainImg = productCard.querySelector(".product-main-image");
-  if (mainImg && variant.image) mainImg.src = variant.image;
+  })
 
-  // update product title to show selected color
-  const title = productCard.querySelector("h3");
-  if (title) title.innerText = `${productData.title} - ${variant.colorName}`;
+})
 
-  // update quick / add buttons' dataset to point to this variant
-  const quickBtn = productCard.querySelector(".quick-btn");
-  const addBtn = productCard.querySelector(".add-btn");
-  if (quickBtn) quickBtn.dataset.variant = variantIndex;
-  if (addBtn) addBtn.dataset.variant = variantIndex;
+/* SELECT VARIANT */
 
-  // visually mark selected swatch
-  productCard.querySelectorAll(".swatch").forEach((s, i) => {
-    if (i === variantIndex) s.classList.add("swatch-selected");
-    else s.classList.remove("swatch-selected");
-  });
+function selectVariant(productId,variantIndex){
+
+  const productCard=document.querySelector(`.product[data-product-id="${productId}"]`)
+  const productData=PRODUCTS[productId]
+  const variant=productData.variants[variantIndex]
+
+  const mainImg=productCard.querySelector(".product-main-image")
+  const title=productCard.querySelector("h3")
+
+  mainImg.src=variant.image
+  title.innerText=`${productData.title} - ${variant.colorName}`
+
+  const quickBtn=productCard.querySelector(".quick-btn")
+  const addBtn=productCard.querySelector(".add-btn")
+
+  quickBtn.dataset.variant=variantIndex
+  addBtn.dataset.variant=variantIndex
+
+  productCard.querySelectorAll(".swatch").forEach((s,i)=>{
+      s.classList.toggle("swatch-selected",i===variantIndex)
+  })
+
 }
 
-/* Helper used by quick view buttons that pass the button element */
-function quickViewFromBtn(btn) {
-  const pid = btn.dataset.product;
-  const vid = parseInt(btn.dataset.variant || 0, 10);
-  const product = PRODUCTS[pid];
-  if (!product) return;
-  const variant = product.variants[vid] || product.variants[0];
-  quickView(`${product.title} — ${variant.colorName}`, product.price, variant.image);
+/* Quick view helper */
+
+function quickViewFromBtn(btn){
+
+  const pid=btn.dataset.product
+  const vid=parseInt(btn.dataset.variant)
+
+  const product=PRODUCTS[pid]
+  const variant=product.variants[vid]
+
+  quickView(`${product.title} - ${variant.colorName}`,product.price,variant.image)
+
 }
 
-/* Helper used by add to cart buttons that pass the button element */
-function addToCartFromBtn(btn) {
-  const pid = btn.dataset.product;
-  const vid = parseInt(btn.dataset.variant || 0, 10);
-  const product = PRODUCTS[pid];
-  if (!product) return;
-  const variant = product.variants[vid] || product.variants[0];
-  // Keep existing addToCart API (name, price)
-  addToCart(`${product.title} — ${variant.colorName}`, product.price);
+/* Add to cart helper */
+
+function addToCartFromBtn(btn){
+
+  const pid=btn.dataset.product
+  const vid=parseInt(btn.dataset.variant)
+
+  const product=PRODUCTS[pid]
+  const variant=product.variants[vid]
+
+  addToCart(`${product.title} - ${variant.colorName}`,product.price)
+
 }
