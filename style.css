@@ -97,6 +97,37 @@ nav a{
     gap:30px;
 }
 
+/* CATEGORY FILTERS (new) */
+.category-filters{
+    display:flex;
+    gap:10px;
+    margin:18px 0 8px 0;
+    flex-wrap:wrap;
+    align-items:center;
+}
+
+.category-btn{
+    padding:8px 14px;
+    border-radius:20px;
+    background:transparent;
+    border:1px solid #ddd;
+    cursor:pointer;
+    font-weight:600;
+    transition:all .15s;
+}
+
+.category-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+}
+
+.category-btn.active{
+    background:#111;
+    color:white;
+    border-color:#111;
+}
+
+/* product card remains same */
 .product{
     background:white;
     padding:15px;
