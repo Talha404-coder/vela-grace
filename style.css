@@ -374,3 +374,11 @@ footer{
     border-radius:8px;
     font-size:16px;
 }
+img{
+max-width:100%;
+height:auto;
+}
+
+button{
+cursor:pointer;
+}
