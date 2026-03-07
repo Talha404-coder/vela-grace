@@ -374,6 +374,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   })
 
+  // set default filter to 'all' on initial load
+  filterProducts('all')
+
 })
 
 /* SELECT VARIANT */
@@ -428,4 +431,36 @@ function addToCartFromBtn(btn){
 
   addToCart(`${product.title} - ${variant.colorName}`,product.price)
 
+}
+
+/* ================
+   FILTER PRODUCTS
+   ================ */
+
+/**
+ * Show products for a category.
+ * category: 'all' or 'hijabs' or 'abayas' or 'headcaps' or 'accessories'
+ * btnElem: optional, the button DOM element clicked (for active state)
+ */
+function filterProducts(category, btnElem) {
+  const products = document.querySelectorAll('.product')
+  products.forEach(p => {
+    const cat = (p.dataset.category || '').toLowerCase()
+    if (category === 'all' || cat === category.toLowerCase()) {
+      p.style.display = ''
+    } else {
+      p.style.display = 'none'
+    }
+  })
+
+  // update active button UI
+  const buttons = document.querySelectorAll('.category-btn')
+  buttons.forEach(b => b.classList.remove('active'))
+  if (btnElem) {
+    btnElem.classList.add('active')
+  } else {
+    // if no btn passed, try to find the button with matching data-cat
+    const match = document.querySelector(`.category-btn[data-cat="${category}"]`)
+    if (match) match.classList.add('active')
+  }
 }
