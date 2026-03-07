@@ -80,25 +80,182 @@ function toggleCart(){
     document.getElementById("cart-panel").classList.toggle("open")
 }
 
-/* WhatsApp */
+/* Replace this number with your WhatsApp number (country code + number, no +) */
 const WHATSAPP_NUMBER = "923096502422";
 
-let selectedPaymentMethod = null
+/* selected payment method global, used for WhatsApp message and for ui state */
+let selectedPaymentMethod = null;
+let bankInfo = {
+    name: "ABC Company",
+    number: "123456789",
+    iban: "PK00ABCD123456789"
+};
 
 function checkoutWhatsApp() {
-
     if (cart.length === 0) {
-        alert("Your cart is empty!")
-        return
+        alert("Your cart is empty!");
+        return;
     }
 
-    let message = "Hello! I want to order:%0A"
+    let message = "Hello! I want to order:%0A";
 
-    cart.forEach(item=>{
-        message += `${item.name} - Qty: ${item.quantity}%0A`
-    })
+    cart.forEach(item => {
+        message += `${item.name} - Qty: ${item.quantity} - $${item.price * item.quantity}%0A`;
+    });
 
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`,"_blank")
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    message += `%0ATotal: $${total}`;
+
+    if (selectedPaymentMethod) {
+        // add payment method context
+        if (selectedPaymentMethod === 'bank') {
+            message += `%0A%0APayment method: Bank Transfer%0AAccount Name: ${bankInfo.name}%0AAccount Number: ${bankInfo.number}%0AIBAN: ${bankInfo.iban}`;
+        } else {
+            const pretty = selectedPaymentMethod.charAt(0).toUpperCase() + selectedPaymentMethod.slice(1);
+            message += `%0A%0APayment method: ${pretty}`;
+        }
+    }
+
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, "_blank");
+}
+
+/* --- QR Modal functionality for payments --- */
+const qrFiles = {
+    jazzcash: "jazzcash.jpeg",
+    easypaisa: "easypaisa.png",
+    sadapay: "sadapay.png"
+};
+
+/* try multiple paths/extensions for QR (keep same approach) */
+function setImageWithFallback(imgEl, filename) {
+    const bases = ["assets/payments/", "Assets/payments/"];
+    const commonExts = [".jpeg", ".jpg", ".png"];
+
+    const dot = filename.lastIndexOf(".");
+    const baseName = dot > -1 ? filename.slice(0, dot) : filename;
+    const originalExt = dot > -1 ? filename.slice(dot) : "";
+    const exts = [originalExt].concat(commonExts.filter(e => e !== originalExt));
+
+    const candidates = [];
+    bases.forEach(base => {
+        exts.forEach(ext => candidates.push(base + baseName + ext));
+    });
+
+    let i = 0;
+    imgEl.style.display = "";
+    imgEl.src = candidates[0];
+
+    imgEl.onerror = function () {
+        i++;
+        if (i < candidates.length) {
+            imgEl.src = candidates[i];
+        } else {
+            imgEl.style.display = "none";
+            document.getElementById("qr-title").innerText = "QR not found — please check assets folder / file name";
+        }
+    };
+}
+
+/* New: unified function to select payment method from the payment modal.
+   It closes the payment modal and either shows a QR (for wallet methods)
+   or shows bank details (for 'bank'). */
+function selectPayment(method) {
+    selectedPaymentMethod = method;
+
+    // close the select-payment modal if open
+    const pm = document.getElementById("payment-modal");
+    if (pm) pm.style.display = "none";
+
+    if (method === 'bank') {
+        showBankDetails();
+    } else {
+        showQRCode(method);
+    }
+}
+
+/* show QR - closes payment modal first so selection modal doesn't remain on top */
+function showQRCode(method){
+    const qrModal = document.getElementById("qr-modal");
+    const qrTitle = document.getElementById("qr-title");
+    const qrImage = document.getElementById("qr-image");
+    const bankDetailsDiv = document.getElementById("bank-details");
+
+    // hide bank details if previously shown
+    if (bankDetailsDiv) bankDetailsDiv.style.display = "none";
+    if (qrImage) qrImage.style.display = "block";
+
+    qrTitle.innerText = `Scan QR for ${method.charAt(0).toUpperCase() + method.slice(1)}`;
+
+    // close the payment options popup (if any)
+    const pm = document.getElementById("payment-modal");
+    if (pm) pm.style.display = "none";
+
+    qrModal.style.display = "flex";
+
+    const filename = qrFiles[method];
+    if (!filename) {
+        qrTitle.innerText = "QR file not configured for this method";
+        qrImage.style.display = "none";
+        return;
+    }
+
+    setImageWithFallback(qrImage, filename);
+}
+
+/* show bank details inside the same modal (no QR image) */
+function showBankDetails() {
+    const qrModal = document.getElementById("qr-modal");
+    const qrTitle = document.getElementById("qr-title");
+    const qrImage = document.getElementById("qr-image");
+    const bankDetailsDiv = document.getElementById("bank-details");
+
+    // hide qr image
+    if (qrImage) qrImage.style.display = "none";
+
+    // set title and show bank block
+    qrTitle.innerText = "Bank Transfer Details";
+
+    // If the bank details placeholders don't have individual IDs, fill the container
+    if (bankDetailsDiv) {
+        bankDetailsDiv.style.display = "block";
+        // try to find specific ids; otherwise replace innerHTML
+        const nameEl = document.getElementById("bank-name");
+        const numEl = document.getElementById("bank-number");
+        const ibanEl = document.getElementById("bank-iban");
+
+        if (nameEl && numEl && ibanEl) {
+            nameEl.innerText = bankInfo.name;
+            numEl.innerText = bankInfo.number;
+            ibanEl.innerText = bankInfo.iban;
+        } else {
+            bankDetailsDiv.innerHTML = `
+                <p><b>Account Name:</b> ${bankInfo.name}</p>
+                <p><b>Account Number:</b> ${bankInfo.number}</p>
+                <p><b>IBAN:</b> ${bankInfo.iban}</p>
+            `;
+        }
+    }
+
+    // ensure payment modal closed (if any)
+    const pm = document.getElementById("payment-modal");
+    if (pm) pm.style.display = "none";
+
+    // show the modal
+    qrModal.style.display = "flex";
+}
+
+/* close QR / bank modal */
+function closeQRCode(){
+    document.getElementById("qr-modal").style.display = "none";
+}
+
+/* small helpers to open/close the selection modal (Pay Now) */
+function openPaymentOptions(){
+    document.getElementById("payment-modal").style.display="flex"
+}
+
+function closePaymentOptions(){
+    document.getElementById("payment-modal").style.display="none"
 }
 
 /* --- Review slider --- */
