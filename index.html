@@ -1,305 +1,562 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vela Grace</title>
-<link rel="stylesheet" href="style.css">
-</head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#111111" />
+  <title>Vela Grace — Elegant Modest Fashion</title>
 
+  <!-- Single-file copy/paste: styles are embedded so you can paste this file to GitHub or Netlify directly -->
+  <style>
+    /* reset & base */
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;overflow-x:hidden;font-family:Inter, system-ui, -apple-system, Arial, sans-serif;background:#fafafa;color:#222}
+
+    a{color:inherit}
+
+    /* NAVBAR */
+    .navbar{display:flex;align-items:center;justify-content:space-between;padding:16px 6%;background:#fff;position:sticky;top:0;z-index:1200;box-shadow:0 2px 10px rgba(0,0,0,0.04)}
+    .logo{font-weight:700;font-size:20px;letter-spacing:.6px}
+
+    /* desktop nav */
+    nav{display:flex;gap:18px;align-items:center}
+    nav a{padding:8px 10px;border-radius:8px;text-decoration:none;font-weight:600;color:#333}
+    nav a:focus{outline:2px solid #111;outline-offset:2px}
+
+    /* cart & mobile */
+    .controls{display:flex;gap:12px;align-items:center}
+    .cart-btn{background:#111;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700}
+    .cart-count{background:#fff;color:#111;padding:2px 7px;border-radius:999px;margin-left:6px;font-weight:700}
+
+    .hamburger{display:none;background:transparent;border:0;padding:8px;border-radius:8px}
+    .hamburger .bar{display:block;width:22px;height:2px;background:#111;margin:4px 0;border-radius:2px}
+
+    /* HERO */
+    .hero{height:78vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:48px 6%;background-image:linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)),url('assets/hero.png');background-size:cover;background-position:center;color:#fff}
+    .hero .inner{max-width:980px}
+    .hero h1{font-size:40px;margin:0 0 12px}
+    .hero p{font-size:18px;margin:0 0 18px;opacity:.95}
+    .hero .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn{padding:12px 20px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+    .btn-primary{background:#111;color:#fff}
+    .btn-ghost{background:transparent;border:2px solid rgba(255,255,255,0.85);color:#fff}
+
+    /* trust */
+    .trust{display:flex;gap:24px;justify-content:space-around;padding:28px 6%;background:#fff;margin-top:6px}
+    .trust p{margin:0;font-weight:600}
+
+    /* PRODUCTS */
+    .products{padding:48px 6%}
+    .products h2{margin-top:0}
+
+    .category-filters{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 22px}
+    .category-btn{padding:8px 14px;border-radius:999px;background:transparent;border:1px solid #eee;cursor:pointer;font-weight:700}
+    .category-btn.active{background:#111;color:#fff;border-color:#111}
+
+    .product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+
+    .product{position:relative;overflow:visible;background:#fff;padding:14px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.05);transition:transform .28s,box-shadow .28s}
+    .product:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.08)}
+
+    .product img{width:100%;height:220px;object-fit:cover;border-radius:8px}
+
+    /* price + badges */
+    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+    .price{font-weight:800;font-size:18px}
+    .badge{font-size:12px;padding:6px 8px;border-radius:999px;font-weight:800}
+    .badge.new{background:#ffe9e9;color:#9b2b2b}
+    .badge.sale{background:#e9f5ff;color:#0450a8}
+
+    /* hover overlay with actions */
+    .overlay{position:absolute;left:12px;right:12px;bottom:14px;display:flex;justify-content:center;gap:10px;pointer-events:none}
+    .overlay .action{pointer-events:auto;backdrop-filter: blur(4px);background:rgba(255,255,255,0.9);border:0;padding:8px 12px;border-radius:8px;font-weight:700;cursor:pointer}
+
+    /* swatches */
+    .swatches{display:flex;justify-content:center;gap:8px;margin-top:12px}
+    .swatch{width:26px;height:26px;border-radius:50%;border:2px solid #eee;cursor:pointer}
+    .swatch.swatch-selected{box-shadow:0 0 0 3px rgba(0,0,0,0.06);border-color:#111}
+
+    /* reviews & instagram */
+    .reviews{padding:40px 6%;background:#f5f5f5;text-align:center}
+    .review{display:none}
+    .review.active{display:block}
+
+    .instagram{padding:40px 6%;text-align:center}
+    .instagram-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+    .instagram img{width:100%;height:110px;object-fit:cover;border-radius:6px}
+
+    .newsletter{background:#fff;padding:32px 6%;text-align:center}
+    .newsletter input{padding:10px;border-radius:8px;border:1px solid #ddd;width:260px}
+
+    footer{background:#111;color:#fff;padding:24px;text-align:center}
+
+    /* cart panel */
+    .cart-panel{position:fixed;right:-380px;top:0;width:360px;height:100%;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,0.18);padding:18px;transition:all .36s;z-index:1300}
+    .cart-panel.open{right:0}
+    .cart-item{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .qty-btn{padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:transparent;cursor:pointer}
+
+    /* modals */
+    .qr-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:1400}
+    .qr-content{background:#fff;padding:22px;border-radius:12px;max-width:480px;width:94%;text-align:center}
+
+    /* quickview */
+    .quickview{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:1400}
+    .quickview-content{background:#fff;padding:22px;border-radius:12px;max-width:920px;width:95%;text-align:center}
+    .zoom-img{max-width:100%;height:auto;transition:transform .28s;cursor:zoom-in}
+
+    /* small screens */
+    @media (max-width:880px){
+      nav{display:none}
+      .hamburger{display:inline-block}
+      .hero h1{font-size:28px}
+      .hero p{font-size:15px}
+      .product img{height:180px}
+      .controls{gap:8px}
+    }
+
+    /* mobile nav panel */
+    .mobile-nav{position:fixed;inset:0;left:-100%;background:#fff;z-index:1600;transition:left .28s;padding:30px}
+    .mobile-nav.open{left:0}
+    .mobile-nav a{display:block;padding:12px 0;font-weight:700}
+
+    /* focus states for accessibility */
+    button:focus, a:focus{outline:3px solid rgba(17,17,17,0.12);outline-offset:3px}
+  </style>
+</head>
 <body>
 
-<header class="navbar">
-<div class="logo">Vela Grace</div>
+  <header class="navbar" role="banner">
+    <div class="logo">Vela Grace</div>
 
-<nav>
-<a href="#">Home</a>
-<a href="#shop">Shop</a>
-<a href="#reviews">Reviews</a>
-<a href="#instagram">Instagram</a>
-</nav>
+    <nav role="navigation" aria-label="Main navigation">
+      <a href="#">Home</a>
+      <a href="#shop">Shop</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#instagram">Instagram</a>
+    </nav>
 
-<button id="cart-btn" class="cart-btn" aria-label="Open cart">
-🛒 <span id="cart-count" class="cart-count">0</span>
-</button>
+    <div class="controls">
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
 
-</header>
+      <button id="cart-btn" class="cart-btn" aria-controls="cart-panel" aria-haspopup="dialog" aria-label="Open cart">
+        🛒 Cart <span id="cart-count" class="cart-count">0</span>
+      </button>
+    </div>
+  </header>
 
-<section class="hero">
-<div>
-<h1>Elegant Modest Fashion</h1>
-<p>Premium Hijabs & Abayas</p>
-<button onclick="scrollShop()">Shop Collection</button>
-</div>
-</section>
-
-<section class="trust">
-<p>✔ Premium Fabrics</p>
-<p>✔ Trusted by Customers</p>
-<p>✔ Fast Delivery</p>
-</section>
-
-<section class="products" id="shop">
-
-<h2>Shop Collection</h2>
-
-<!-- CATEGORY FILTERS (new) -->
-<div class="category-filters" role="tablist" aria-label="Product categories">
-  <button class="category-btn active" data-cat="all" onclick="filterProducts('all', this)">All</button>
-  <button class="category-btn" data-cat="hijabs" onclick="filterProducts('hijabs', this)">Hijabs</button>
-  <button class="category-btn" data-cat="abayas" onclick="filterProducts('abayas', this)">Abayas</button>
-  <button class="category-btn" data-cat="headcaps" onclick="filterProducts('headcaps', this)">Headcaps</button>
-  <button class="category-btn" data-cat="accessories" onclick="filterProducts('accessories', this)">Accessories</button>
-</div>
-
-<div class="product-grid">
-
-<!-- Product 1 -->
-<div class="product" data-product-id="silk-hijab" data-category="hijabs">
-  <img class="product-main-image" src="assets/products/hijab1.jpeg" alt="Silk Hijab">
-  <h3>Silk Hijab</h3>
-  <p>$25</p>
-
-  <div class="swatches" data-product="silk-hijab">
-    <!-- swatches rendered/managed by JS -->
+  <!-- Mobile nav panel -->
+  <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+    <a href="#">Home</a>
+    <a href="#shop">Shop</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#instagram">Instagram</a>
+    <hr />
+    <a href="https://instagram.com/velagrace_official" target="_blank">@velagrace_official</a>
+    <a href="https://wa.me/923096502422" target="_blank">WhatsApp</a>
   </div>
 
-  <button class="quick-btn" data-product="silk-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
-  <button class="add-btn" data-product="silk-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
-</div>
+  <main>
+    <section class="hero" role="region" aria-label="Hero">
+      <div class="inner">
+        <h1>Elegant Modest Fashion</h1>
+        <p>Premium Hijabs &amp; Abayas — thoughtfully made, intentionally styled.</p>
 
-<!-- Product 2 -->
-<div class="product" data-product-id="chiffon-hijab" data-category="hijabs">
-  <img class="product-main-image" src="assets/products/hijab2.jpeg" alt="Chiffon Hijab">
-  <h3>Chiffon Hijab</h3>
-  <p>$20</p>
+        <div class="cta">
+          <button class="btn btn-primary" onclick="scrollShop()">Shop Collection</button>
+          <button class="btn btn-ghost" onclick="checkoutWhatsApp()">Order via WhatsApp</button>
+        </div>
+      </div>
+    </section>
 
-  <div class="swatches" data-product="chiffon-hijab">
-    <!-- swatches rendered/managed by JS -->
+    <section class="trust" aria-label="Why choose us">
+      <p>✔ Premium Fabrics</p>
+      <p>✔ Trusted by Customers</p>
+      <p>✔ Fast Delivery</p>
+    </section>
+
+    <section class="products" id="shop">
+      <h2>Shop Collection</h2>
+
+      <div class="category-filters" role="tablist" aria-label="Product categories">
+        <button class="category-btn active" data-cat="all" onclick="filterProducts('all', this)">All</button>
+        <button class="category-btn" data-cat="hijabs" onclick="filterProducts('hijabs', this)">Hijabs</button>
+        <button class="category-btn" data-cat="abayas" onclick="filterProducts('abayas', this)">Abayas</button>
+        <button class="category-btn" data-cat="headcaps" onclick="filterProducts('headcaps', this)">Headcaps</button>
+        <button class="category-btn" data-cat="accessories" onclick="filterProducts('accessories', this)">Accessories</button>
+      </div>
+
+      <div class="product-grid">
+
+        <!-- Product 1 -->
+        <article class="product" data-product-id="silk-hijab" data-category="hijabs" aria-label="Silk Hijab">
+          <img class="product-main-image" src="assets/products/hijab1.jpeg" alt="Silk Hijab - black" loading="lazy">
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+            <h3 style="margin:0;font-size:16px">Silk Hijab</h3>
+            <span class="badge new">New</span>
+          </div>
+
+          <div class="meta">
+            <div class="price" data-price="25">$25.00</div>
+            <div></div>
+          </div>
+
+          <div class="swatches" data-product="silk-hijab"></div>
+
+          <div class="overlay">
+            <button class="action" data-product="silk-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
+            <button class="action" data-product="silk-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Product 2 -->
+        <article class="product" data-product-id="chiffon-hijab" data-category="hijabs" aria-label="Chiffon Hijab">
+          <img class="product-main-image" src="assets/products/hijab2.jpeg" alt="Chiffon Hijab" loading="lazy">
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+            <h3 style="margin:0;font-size:16px">Chiffon Hijab</h3>
+            <span class="badge sale">Sale</span>
+          </div>
+
+          <div class="meta">
+            <div class="price" data-price="20">$20.00</div>
+            <div></div>
+          </div>
+
+          <div class="swatches" data-product="chiffon-hijab"></div>
+
+          <div class="overlay">
+            <button class="action" data-product="chiffon-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
+            <button class="action" data-product="chiffon-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Product 3 -->
+        <article class="product" data-product-id="cotton-hijab" data-category="hijabs" aria-label="Cotton Hijab">
+          <img class="product-main-image" src="assets/products/hijab3.jpeg" alt="Cotton Hijab" loading="lazy">
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+            <h3 style="margin:0;font-size:16px">Cotton Hijab</h3>
+            <span class="badge" style="background:#f3f3f3;color:#333">Best</span>
+          </div>
+
+          <div class="meta">
+            <div class="price" data-price="25">$25.00</div>
+            <div></div>
+          </div>
+
+          <div class="swatches" data-product="cotton-hijab"></div>
+
+          <div class="overlay">
+            <button class="action" data-product="cotton-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
+            <button class="action" data-product="cotton-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Product 4 -->
+        <article class="product" data-product-id="jorget-hijab" data-category="hijabs" aria-label="Jorget Hijab">
+          <img class="product-main-image" src="assets/products/hijab4.jpeg" alt="Jorget Hijab" loading="lazy">
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+            <h3 style="margin:0;font-size:16px">Jorget Hijab</h3>
+            <span class="badge" style="background:#fff;color:#111;border:1px solid #eee">Classic</span>
+          </div>
+
+          <div class="meta">
+            <div class="price" data-price="20">$20.00</div>
+            <div></div>
+          </div>
+
+          <div class="swatches" data-product="jorget-hijab"></div>
+
+          <div class="overlay">
+            <button class="action" data-product="jorget-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
+            <button class="action" data-product="jorget-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="reviews" id="reviews">
+      <div class="review active">★★★★★<p>"Beautiful hijabs and amazing quality!"</p>— Ayesha</div>
+      <div class="review">★★★★★<p>"Fast delivery and premium fabrics."</p>— Sana</div>
+      <div class="review">★★★★★<p>"My favorite modest fashion store!"</p>— Zara</div>
+    </section>
+
+    <section class="instagram" id="instagram">
+      <h2>Instagram</h2>
+      <div class="instagram-grid">
+        <img src="assets/instagram/1.jpeg" alt="insta 1" loading="lazy">
+        <img src="assets/instagram/2.jpeg" alt="insta 2" loading="lazy">
+        <img src="assets/instagram/3.jpeg" alt="insta 3" loading="lazy">
+        <img src="assets/instagram/4.jpeg" alt="insta 4" loading="lazy">
+      </div>
+    </section>
+
+    <section class="newsletter">
+      <h2>Subscribe</h2>
+      <form onsubmit="event.preventDefault();alert('Thanks — we\'ll keep you updated!')">
+        <input type="email" placeholder="Enter email" required aria-label="Email address">
+        <button class="btn btn-primary" type="submit">Subscribe</button>
+      </form>
+    </section>
+
+    <section class="connect" style="padding:28px 6%">
+      <h2>Connect With Us</h2>
+      <p>Instagram: <a href="https://instagram.com/velagrace_official" target="_blank">@velagrace_official</a></p>
+      <p>Facebook: <a href="https://facebook.com/velagrace_official" target="_blank">velagrace_official</a></p>
+      <p>WhatsApp: <a href="https://wa.me/923096502422" target="_blank">Chat on WhatsApp</a></p>
+      <p>YouTube: <a href="https://youtube.com/@velagrace_official" target="_blank">velagrace_official</a></p>
+    </section>
+
+  </main>
+
+  <!-- QR / Bank modal -->
+  <div id="qr-modal" class="qr-modal" aria-hidden="true">
+    <div class="qr-content">
+      <button style="position:absolute;right:12px;top:12px;border:none;background:transparent;font-size:20px;cursor:pointer" onclick="closeQRCode()">&times;</button>
+      <h3 id="qr-title"></h3>
+      <img id="qr-image" src="" alt="QR code" style="max-width:260px;margin-top:10px;display:block;margin-left:auto;margin-right:auto">
+      <div id="bank-details" style="display:none;margin-top:14px"></div>
+      <div style="margin-top:14px"><button class="btn btn-primary" onclick="checkoutWhatsApp()">Verify via WhatsApp</button></div>
+    </div>
   </div>
 
-  <button class="quick-btn" data-product="chiffon-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
-  <button class="add-btn" data-product="chiffon-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
-</div>
-
-<!-- Product 3 -->
-<div class="product" data-product-id="cotton-hijab" data-category="hijabs">
-  <img class="product-main-image" src="assets/products/hijab3.jpeg" alt="Cotton Hijab">
-  <h3>Cotton Hijab</h3>
-  <p>$25</p>
-
-  <div class="swatches" data-product="cotton-hijab">
-    <!-- swatches rendered/managed by JS -->
+  <!-- Quickview modal -->
+  <div id="quickview" class="quickview" aria-hidden="true">
+    <div class="quickview-content">
+      <button style="position:absolute;right:12px;top:12px;border:none;background:transparent;font-size:20px;cursor:pointer" onclick="closeQuickView()">&times;</button>
+      <h2 id="product-title"></h2>
+      <img id="product-image" class="zoom-img" alt="product image" onclick="toggleZoom()">
+      <div style="margin-top:18px"><button class="btn btn-primary" onclick="checkoutWhatsApp()">Order via WhatsApp</button></div>
+    </div>
   </div>
 
-  <button class="quick-btn" data-product="cotton-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
-  <button class="add-btn" data-product="cotton-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
-</div>
+  <footer>
+    <p>© 2026 Vela Grace</p>
+    <div style="margin-top:10px"><button class="btn" onclick="checkoutWhatsApp()">Order via WhatsApp</button></div>
+  </footer>
 
-<!-- Product 4 -->
-<div class="product" data-product-id="jorget-hijab" data-category="hijabs">
-  <img class="product-main-image" src="assets/products/hijab4.jpeg" alt="Jorget Hijab">
-  <h3>Jorget Hijab</h3>
-  <p>$20</p>
+  <!-- CART PANEL -->
+  <aside id="cart-panel" class="cart-panel" aria-hidden="true">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <div style="margin-top:18px"><button class="btn btn-primary" onclick="openPaymentOptions()">Pay Now</button></div>
+  </aside>
 
-  <div class="swatches" data-product="jorget-hijab">
-    <!-- swatches rendered/managed by JS -->
+  <!-- payment modal -->
+  <div id="payment-modal" class="qr-modal" aria-hidden="true">
+    <div class="qr-content">
+      <button style="position:absolute;right:12px;top:12px;border:none;background:transparent;font-size:20px;cursor:pointer" onclick="closePaymentOptions()">&times;</button>
+      <h3>Select Payment Method</h3>
+      <div style="margin-top:12px">
+        <button class="btn" onclick="selectPayment('jazzcash')">JazzCash</button>
+        <button class="btn" onclick="selectPayment('easypaisa')">Easypaisa</button>
+        <button class="btn" onclick="selectPayment('sadapay')">SadaPay</button>
+        <button class="btn" onclick="selectPayment('bank')">Bank Transfer</button>
+      </div>
+    </div>
   </div>
 
-  <button class="quick-btn" data-product="jorget-hijab" data-variant="0" onclick="quickViewFromBtn(this)">Quick View</button>
-  <button class="add-btn" data-product="jorget-hijab" data-variant="0" onclick="addToCartFromBtn(this)">Add to Cart</button>
-</div>
-
-</div>
-</section>
-
-<section class="reviews" id="reviews">
-
-<div class="review active">
-★★★★★
-<p>"Beautiful hijabs and amazing quality!"</p>
-— Ayesha
-</div>
-
-<div class="review">
-★★★★★
-<p>"Fast delivery and premium fabrics."</p>
-— Sana
-</div>
-
-<div class="review">
-★★★★★
-<p>"My favorite modest fashion store!"</p>
-— Zara
-</div>
-
-</section>
-
-
-
-<section class="instagram" id="instagram">
-
-<h2>Instagram</h2>
-
-<div class="instagram-grid">
-
-<a href="https://instagram.com/velagrace_official" target="_blank">
-<img src="assets/instagram/1.jpeg">
-</a>
-
-<a href="https://instagram.com/velagrace_official" target="_blank">
-<img src="assets/instagram/2.jpeg">
-</a>
-
-<a href="https://instagram.com/velagrace_official" target="_blank">
-<img src="assets/instagram/3.jpeg">
-</a>
-
-<a href="https://instagram.com/velagrace_official" target="_blank">
-<img src="assets/instagram/4.jpeg">
-</a>
-
-</div>
-
-</section>
-
-<section class="newsletter">
-
-<h2>Subscribe</h2>
-
-<input type="email" placeholder="Enter email">
-<button>Subscribe</button>
-
-</section>
-
-<!-- CONNECT / SOCIAL SECTION -->
-<section class="connect">
-
-<h2>Connect With Us</h2>
-
-<p>
-Instagram:
-<a href="https://instagram.com/velagrace_official" target="_blank">
-@velagrace_official
-</a>
-</p>
-
-<p>
-Facebook:
-<a href="https://facebook.com/velagrace_official" target="_blank">
-velagrace_official
-</a>
-</p>
-
-<p>
-WhatsApp:
-<a href="https://wa.me/923096502422" target="_blank">
-Chat on WhatsApp
-</a>
-</p>
-
-<p>
-YouTube:
-<a href="https://youtube.com/@velagrace_official" target="_blank">
-velagrace_official
-</a>
-</p>
-
-</section>
-
-<!-- QR Modal -->
-<div id="qr-modal" class="qr-modal" style="display:none;">
-<div class="qr-content">
-<span class="close" onclick="closeQRCode()">&times;</span>
-
-<h3 id="qr-title"></h3>
-
-<img id="qr-image" src="" width="250">
-
-<div id="bank-details" style="display:none">
-
-<p><b>Account Name:</b> Vela Grace</p>
-<p><b>Account Number:</b> 123456789</p>
-<p><b>IBAN:</b> PK00ABCD123456789</p>
-
-</div>
-
-<button onclick="checkoutWhatsApp()">
-Verify via WhatsApp
-</button>
-
-</div>
-</div>
-
-<footer>
-
-<p>© 2026 Vela Grace</p>
-
-<button onclick="checkoutWhatsApp()">
-Order via WhatsApp
-</button>
-
-</footer>
-
-<div id="cart-panel" class="cart-panel">
-
-<h2>Your Cart</h2>
-
-<div id="cart-items"></div>
-
-<button onclick="openPaymentOptions()" style="margin-top:20px">
-Pay Now
-</button>
-
-</div>
-
-<div id="payment-modal" class="qr-modal" style="display:none">
-
-<div class="qr-content">
-
-<span class="close" onclick="closePaymentOptions()">&times;</span>
-
-<h3>Select Payment Method</h3>
-
-<button onclick="selectPayment('jazzcash')">JazzCash</button><br><br>
-
-<button onclick="selectPayment('easypaisa')">Easypaisa</button><br><br>
-
-<button onclick="selectPayment('sadapay')">SadaPay</button><br><br>
-
-<button onclick="selectPayment('bank')">Bank Transfer</button>
-
-</div>
-
-</div>
-
-<div id="quickview" class="quickview">
-
-<div class="quickview-content">
-
-<h2 id="product-title"></h2>
-
-<img id="product-image" onclick="toggleZoom()" 
-style="max-width:90%;max-height:70vh;border-radius:10px;object-fit:contain;cursor:zoom-in;transition:0.3s;">
-
-<br><br>
-
-<button onclick="closeQuickView()">Close</button>
-
-</div>
-
-</div>
-<!-- WHATSAPP FLOAT -->
-
-<a href="https://wa.me/923096502422" class="whatsapp-support" target="_blank">
-
-💬
-
-</a>
-
-<script src="script.js"></script>
-
-
-
+  <!-- Script: embedded so single file deploy works -->
+  <script>
+    // ------------------- App state -------------------
+    let cart = []
+    const WHATSAPP_NUMBER = "923096502422"
+    let selectedPaymentMethod = null
+    const bankInfo = {name: "Vela Grace", number: "123456789", iban: "PK00ABCD123456789"}
+
+    // price formatter
+    function formatPrice(n){ return (typeof n === 'number' ? n : parseFloat(n || 0)).toFixed(2) }
+
+    // safe DOM helpers
+    function q(sel, ctx=document){ return ctx.querySelector(sel) }
+    function qa(sel, ctx=document){ return Array.from(ctx.querySelectorAll(sel)) }
+
+    function scrollShop(){ document.getElementById('shop').scrollIntoView({behavior:'smooth'}) }
+
+    // ------------------- Quick view -------------------
+    function quickView(name,price,image){
+      const modal = q('#quickview')
+      q('#product-title').innerText = name
+      const img = q('#product-image')
+      img.src = image
+      img.style.transform = 'scale(1)'
+      modal.style.display = 'flex'
+      modal.setAttribute('aria-hidden','false')
+    }
+    function closeQuickView(){ const m=q('#quickview'); m.style.display='none'; m.setAttribute('aria-hidden','true') }
+
+    // ------------------- Cart -------------------
+    function addToCart(name,price){
+      price = Number(price)
+      let existing = cart.find(i=>i.name===name)
+      if(existing) existing.quantity++
+      else cart.push({name, price, quantity:1})
+      updateCart()
+    }
+
+    function updateCart(){
+      let count=0, total=0
+      let html=''
+      cart.forEach((item,idx)=>{
+        count += item.quantity
+        total += item.price * item.quantity
+        html += `<div class="cart-item"><div><b>${idx+1}. ${item.name}</b><br><small>$${formatPrice(item.price)}</small></div><div><button class="qty-btn" onclick="changeQty(${idx},-1)">-</button> <span style=\"margin:0 8px\">${item.quantity}</span> <button class="qty-btn" onclick="changeQty(${idx},1)">+</button></div></div>`
+      })
+      if(cart.length===0) html = '<p>Your cart is empty</p>'
+      html += `<hr><h3>Total: $${formatPrice(total)}</h3>`
+      q('#cart-count').innerText = count
+      q('#cart-items').innerHTML = html
+    }
+
+    function changeQty(index,change){
+      if(!cart[index]) return
+      cart[index].quantity += change
+      if(cart[index].quantity <= 0) cart.splice(index,1)
+      updateCart()
+    }
+
+    function toggleCart(){ const panel = q('#cart-panel'); panel.classList.toggle('open'); panel.setAttribute('aria-hidden', !panel.classList.contains('open')) }
+
+    // ------------------- WhatsApp checkout -------------------
+    function checkoutWhatsApp(){
+      if(cart.length===0){ alert('Your cart is empty!'); return }
+      let message = 'Hello! I want to order:%0A'
+      cart.forEach(item=>{ message += `${item.name} - Qty: ${item.quantity} - $${formatPrice(item.price * item.quantity)}%0A` })
+      const total = cart.reduce((s,i)=>s+i.price*i.quantity,0)
+      message += `%0ATotal: $${formatPrice(total)}`
+      if(selectedPaymentMethod){
+        if(selectedPaymentMethod === 'bank'){
+          message += `%0A%0APayment method: Bank Transfer%0AAccount Name: ${bankInfo.name}%0AAccount Number: ${bankInfo.number}%0AIBAN: ${bankInfo.iban}`
+        } else {
+          message += `%0A%0APayment method: ${selectedPaymentMethod.charAt(0).toUpperCase()+selectedPaymentMethod.slice(1)}`
+        }
+      }
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`,'_blank')
+    }
+
+    // ------------------- QR / Payments -------------------
+    const qrFiles = { jazzcash: 'assets/payments/jazzcash.jpeg', easypaisa: 'assets/payments/easypaisa.png', sadapay: 'assets/payments/sadapay.png' }
+    function setImageWithFallback(imgEl, filename){
+      const bases = ['assets/payments/','Assets/payments/']
+      const exts = ['.jpeg','.jpg','.png']
+      const name = filename.replace(/^.*\\/,'')
+      let candidates = bases.flatMap(b => exts.map(e => b + name.replace(/\.[^.]*$/,'') + e))
+      let i=0
+      imgEl.style.display=''
+      imgEl.src = candidates[0]
+      imgEl.onerror = ()=>{ i++; if(i < candidates.length) imgEl.src = candidates[i]; else imgEl.style.display='none' }
+    }
+    function selectPayment(method){ selectedPaymentMethod = method; q('#payment-modal').style.display='none'; if(method==='bank') showBankDetails(); else showQRCode(method) }
+    function showQRCode(method){ const modal=q('#qr-modal'); const title=q('#qr-title'); const img=q('#qr-image'); const bankDiv=q('#bank-details'); bankDiv.style.display='none'; img.style.display='block'; title.innerText = `Scan QR for ${method.charAt(0).toUpperCase()+method.slice(1)}`; modal.style.display='flex'; modal.setAttribute('aria-hidden','false'); const filename = qrFiles[method]; if(!filename){ title.innerText='QR not configured'; img.style.display='none'; return } setImageWithFallback(img, filename) }
+    function showBankDetails(){ const modal=q('#qr-modal'); const title=q('#qr-title'); const img=q('#qr-image'); const bankDiv=q('#bank-details'); img.style.display='none'; title.innerText='Bank Transfer Details'; bankDiv.style.display='block'; bankDiv.innerHTML = `<p><b>Account Name:</b> ${bankInfo.name}</p><p><b>Account Number:</b> ${bankInfo.number}</p><p><b>IBAN:</b> ${bankInfo.iban}</p>`; modal.style.display='flex'; modal.setAttribute('aria-hidden','false') }
+    function closeQRCode(){ const m=q('#qr-modal'); m.style.display='none'; m.setAttribute('aria-hidden','true') }
+
+    function openPaymentOptions(){ q('#payment-modal').style.display='flex'; q('#payment-modal').setAttribute('aria-hidden','false') }
+    function closePaymentOptions(){ q('#payment-modal').style.display='none'; q('#payment-modal').setAttribute('aria-hidden','true') }
+
+    // ------------------- review slider -------------------
+    let rIndex = 0
+    setInterval(()=>{
+      const reviews = qa('.review')
+      if(reviews.length===0) return
+      reviews[rIndex].classList.remove('active')
+      rIndex = (rIndex + 1) % reviews.length
+      reviews[rIndex].classList.add('active')
+    },4000)
+
+    // ------------------- zoom img -------------------
+    let zoomed=false
+    function toggleZoom(){ const img=q('#product-image'); if(!img) return; if(!zoomed){ img.style.transform='scale(2)'; zoomed=true } else { img.style.transform='scale(1)'; zoomed=false } }
+
+    // ------------------- Product variants data -------------------
+    const PRODUCTS = {
+      "silk-hijab": { title: "Silk Hijab", price: 25, variants: [ { colorName: "Black", colorHex: "#111111", image: "assets/products/hijab1.jpeg" }, { colorName: "Maroon", colorHex: "#6b2637", image: "assets/products/hijab1-maroon.jpeg" }, { colorName: "Beige", colorHex: "#e7d7c2", image: "assets/products/hijab1-beige.jpeg" } ] },
+      "chiffon-hijab": { title: "Chiffon Hijab", price: 20, variants: [ { colorName: "Dusty Pink", colorHex: "#dca5a5", image: "assets/products/hijab2.jpeg" }, { colorName: "Olive", colorHex: "#7b8b57", image: "assets/products/hijab2-olive.jpeg" }, { colorName: "Black", colorHex: "#111111", image: "assets/products/hijab2-black.jpeg" } ] },
+      "cotton-hijab": { title: "Cotton Hijab", price: 25, variants: [ { colorName: "Sky Blue", colorHex: "#a8d0e6", image: "assets/products/hijab3.jpeg" }, { colorName: "Mustard", colorHex: "#d6a04b", image: "assets/products/hijab3-mustard.jpeg" }, { colorName: "Cream", colorHex: "#f3ead6", image: "assets/products/hijab3-cream.jpeg" } ] },
+      "jorget-hijab": { title: "Jorget Hijab", price: 20, variants: [ { colorName: "Maroon", colorHex: "#6b2637", image: "assets/products/hijab4.jpeg" }, { colorName: "Teal", colorHex: "#0e6b63", image: "assets/products/hijab4-teal.jpeg" }, { colorName: "Light Grey", colorHex: "#d6d6d6", image: "assets/products/hijab4-grey.jpeg" } ] }
+    }
+
+    // render swatches & initialize
+    document.addEventListener('DOMContentLoaded', ()=>{
+      qa('.product').forEach(productCard => {
+        const pid = productCard.dataset.productId
+        const productData = PRODUCTS[pid]
+        if(!productData) return
+        const swatchesContainer = productCard.querySelector('.swatches')
+        const mainImg = productCard.querySelector('.product-main-image')
+        const titleEl = productCard.querySelector('h3')
+        swatchesContainer.innerHTML = ''
+        productData.variants.forEach((v,idx)=>{
+          const btn = document.createElement('button')
+          btn.className = 'swatch'
+          btn.title = v.colorName
+          btn.style.background = v.colorHex
+          btn.onclick = ()=> selectVariant(pid, idx)
+          swatchesContainer.appendChild(btn)
+        })
+        // set defaults
+        const firstVariant = productData.variants[0]
+        if(mainImg) mainImg.src = firstVariant.image
+        const priceEl = productCard.querySelector('.price')
+        if(priceEl) priceEl.innerText = `$${formatPrice(productData.price)}`
+        const addBtn = productCard.querySelector('.overlay .action:last-child')
+        const quickBtn = productCard.querySelector('.overlay .action:first-child')
+        if(addBtn) addBtn.dataset.product = pid
+        if(quickBtn) quickBtn.dataset.product = pid
+        // add dataset variant
+        if(addBtn) addBtn.dataset.variant = 0
+        if(quickBtn) quickBtn.dataset.variant = 0
+        const first = swatchesContainer.querySelector('.swatch')
+        if(first) first.classList.add('swatch-selected')
+      })
+
+      // attach cart toggle safely
+      const cartBtn = q('#cart-btn')
+      if(cartBtn) cartBtn.addEventListener('click', toggleCart)
+
+      // mobile nav
+      const ham = q('#hamburger'), mnav = q('#mobile-nav')
+      if(ham){
+        ham.addEventListener('click', ()=>{
+          const open = mnav.classList.toggle('open')
+          ham.setAttribute('aria-expanded', open)
+          mnav.setAttribute('aria-hidden', !open)
+        })
+      }
+
+      filterProducts('all')
+      updateCart()
+    })
+
+    function selectVariant(productId, variantIndex){
+      const productCard = q(`.product[data-product-id="${productId}"]`)
+      const productData = PRODUCTS[productId]
+      if(!productCard || !productData) return
+      const variant = productData.variants[variantIndex]
+      const mainImg = productCard.querySelector('.product-main-image')
+      const title = productCard.querySelector('h3')
+      if(mainImg) mainImg.src = variant.image
+      if(title) title.innerText = `${productData.title} - ${variant.colorName}`
+      const quickBtn = productCard.querySelector('.overlay .action:first-child')
+      const addBtn = productCard.querySelector('.overlay .action:last-child')
+      if(quickBtn) quickBtn.dataset.variant = variantIndex
+      if(addBtn) addBtn.dataset.variant = variantIndex
+      productCard.querySelectorAll('.swatch').forEach((s,i)=> s.classList.toggle('swatch-selected', i===variantIndex))
+    }
+
+    function quickViewFromBtn(btn){ const pid = btn.dataset.product; const vid = Number(btn.dataset.variant || 0); const product = PRODUCTS[pid]; const variant = product.variants[vid]; quickView(`${product.title} - ${variant.colorName}`, product.price, variant.image) }
+    function addToCartFromBtn(btn){ const pid = btn.dataset.product; const vid = Number(btn.dataset.variant || 0); const product = PRODUCTS[pid]; const variant = product.variants[vid]; addToCart(`${product.title} - ${variant.colorName}`, product.price) }
+
+    function filterProducts(category, btnElem){ const products = qa('.product'); products.forEach(p=>{ const cat=(p.dataset.category||'').toLowerCase(); p.style.display = (category==='all' || cat===category.toLowerCase()) ? '' : 'none' }); qa('.category-btn').forEach(b=>b.classList.remove('active')); if(btnElem) btnElem.classList.add('active'); else { const match = q(`.category-btn[data-cat="${category}"]`); if(match) match.classList.add('active') } }
+
+  </script>
 </body>
 </html>
