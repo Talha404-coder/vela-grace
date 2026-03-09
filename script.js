@@ -464,3 +464,25 @@ function filterProducts(category, btnElem) {
     if (match) match.classList.add('active')
   }
 }
+function toggleMenu(){
+document.querySelector("nav").classList.toggle("active")
+}
+
+function subscribeNewsletter(){
+
+let email=document.querySelector(".newsletter input").value
+
+if(email===""){
+alert("Please enter email")
+return
+}
+
+alert("Thank you for subscribing!")
+
+document.querySelector(".newsletter input").value=""
+
+}
+
+window.addEventListener("load",function(){
+document.getElementById("loader").style.display="none"
+})
